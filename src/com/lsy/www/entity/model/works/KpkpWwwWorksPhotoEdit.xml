@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwWorksPhotoEditMapper">
+	<typeAlias alias="kpkpWwwWorksPhotoEdit" type="com.lsy.www.entity.model.works.KpkpWwwWorksPhotoEdit" />
+	<typeAlias alias="kpkpWwwWorksPhotoEditCond" type="com.lsy.www.entity.cond.works.KpkpWwwWorksPhotoEditCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="editId">
+			    editId = #editId#
+			</isNotNull>
+			<isNotNull prepend="and" property="photoId">
+			    photoId = #photoId#
+			</isNotNull>
+			<isNotNull prepend="and" property="authorId">
+			    authorId = #authorId#
+			</isNotNull>
+			<isNotNull prepend="and" property="editFlag">
+			    editFlag = #editFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="adminId">
+			    adminId = #adminId#
+			</isNotNull>
+			<isNotEmpty prepend="and" property="addTimeSt">
+				 <![CDATA[ addTime >= #addTimeSt# ]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="addTimeEd">
+				 <![CDATA[ addTime <= #addTimeEd# ]]>
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="photoId">
+			photoId = #photoId#
+		</isNotNull>
+		<isNotNull prepend="," property="authorId">
+			authorId = #authorId#
+		</isNotNull>
+		<isNotNull prepend="," property="editFlag">
+			editFlag = #editFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+		<isNotNull prepend="," property="adminId">
+			adminId = #adminId#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwWorksPhotoEdit">
+		select * from kpkp_works_photo_edit where editId=#editId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwWorksPhotoEditCond" resultClass="kpkpWwwWorksPhotoEdit">
+		select * from kpkp_works_photo_edit inner join (select editId from kpkp_works_photo_edit
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_works_photo_edit.editId desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+		) as kpkp_works_photo_edit_index using(editId)
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwWorksPhotoEditCond"
+		resultClass="int">
+		select count(*) from kpkp_works_photo_edit
+		<include refid="condition" />
+	</select>
+	
+	<insert id="insert" parameterClass="kpkpWwwWorksPhotoEdit">
+		insert into kpkp_works_photo_edit
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="editId">
+			SELECT @@IDENTITY
+			AS editId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwWorksPhotoEdit">
+		update kpkp_works_photo_edit
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where editId= #editId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwWorksPhotoEditCond">
+		update kpkp_works_photo_edit
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from
+		kpkp_works_photo_edit where editId = #editId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwWorksPhotoEditCond">
+		delete from kpkp_works_photo_edit
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwWorksPhotoEditCond"
+		resultClass="kpkpWwwWorksPhotoEdit" remapResults="true">
+		select $statsParam$ from kpkp_works_photo_edit
+		<include refid="condition" />
+	</select>
+</sqlMap>

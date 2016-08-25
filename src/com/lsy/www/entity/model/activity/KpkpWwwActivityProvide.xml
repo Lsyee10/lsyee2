@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwActivityProvideMapper">
+	<typeAlias alias="kpkpWwwActivityProvide" type="com.lsy.www.entity.model.activity.KpkpWwwActivityProvide" />
+	<typeAlias alias="kpkpWwwActivityProvideCond" type="com.lsy.www.entity.cond.activity.KpkpWwwActivityProvideCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="provideId">
+			    kpkp_activity_provide.provideId = #provideId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+			    kpkp_activity_provide.userId = #userId#
+			</isNotNull>
+			<isNotNull prepend="and" property="activityId">
+			    kpkp_activity_provide.activityId = #activityId#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="userId">
+			userId = #userId#
+		</isNotNull>
+		<isNotNull prepend="," property="activityId">
+			activityId = #activityId#
+		</isNotNull>
+		<isNotNull prepend="," property="photos">
+			photos = #photos#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwActivityProvide">
+		select * from kpkp_activity_provide where provideId=#provideId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwActivityProvideCond" resultClass="kpkpWwwActivityProvide" remapResults="true">
+		select kpkp_activity_provide.* , kpkp_user_account.avatar as avatar, kpkp_user_account.nickname as nickname, kpkp_user_account.intro as intro
+		from kpkp_activity_provide inner join (select kpkp_activity_provide.provideId from kpkp_activity_provide
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_activity_provide.provideId desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+		) as kpkp_activity_provide_index using(provideId)
+		inner join kpkp_user_account on kpkp_activity_provide.userId = kpkp_user_account.userId
+	</select>
+	
+	<select id="countByCond" parameterClass="kpkpWwwActivityProvideCond"
+		resultClass="int">
+		select count(*) from kpkp_activity_provide
+		<include refid="condition" />
+	</select>
+	
+	<insert id="insert" parameterClass="kpkpWwwActivityProvide">
+		insert into kpkp_activity_provide
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="provideId">
+			SELECT @@IDENTITY
+			AS provideId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwActivityProvide">
+		update kpkp_activity_provide
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where provideId=#provideId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwActivityProvideCond">
+		update kpkp_activity_provide
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_activity_provide where provideId = #provideId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwActivityProvideCond">
+		delete from kpkp_activity_provide
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwActivityProvideCond"
+		resultClass="kpkpWwwActivityProvide" remapResults="true">
+		select $statsParam$ from kpkp_activity_provide
+		<include refid="condition" />
+	</select>
+</sqlMap>

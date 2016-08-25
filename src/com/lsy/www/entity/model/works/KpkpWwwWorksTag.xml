@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwWorksTagMapper">
+	<typeAlias alias="kpkpWwwWorksTag" type="com.lsy.www.entity.model.works.KpkpWwwWorksTag" />
+	<typeAlias alias="kpkpWwwWorksTagCond" type="com.lsy.www.entity.cond.works.KpkpWwwWorksTagCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="tagId">
+			    kpkp_works_tag.tagId = #tagId#
+			</isNotNull>
+			<isNotEmpty prepend="and" property="name">
+			    kpkp_works_tag.name = #name#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="nameLk">
+			    kpkp_works_tag.name like '%$nameLk$%'
+			</isNotEmpty>
+			<isNotNull prepend="and" property="userId">
+			    kpkp_works_tag.userId = #userId# 
+			</isNotNull>
+			<isNotNull prepend="and" property="topFlag">
+			    kpkp_works_tag.topFlag = #topFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="recycleFlag">
+			    kpkp_works_tag.recycleFlag = #recycleFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="photoId">
+			    kpkp_works_photo_tag.photoId = #photoId# 
+			</isNotNull>
+			<isNotNull prepend="and" property="useUserId">
+			    kpkp_works_photo_tag.userId = #useUserId# 
+			</isNotNull>
+			<isNotNull prepend="and" property="subUserId">
+			    kpkp_user_subscribe.userId = #subUserId# 
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="name">
+			name = #name#
+		</isNotNull>
+		<isNotNull prepend="," property="photos">
+			photos = #photos#
+		</isNotNull>
+		<isNotNull prepend="," property="userId">
+			userId = #userId#
+		</isNotNull>
+		<isNotNull prepend="," property="users">
+			users = #users#
+		</isNotNull>
+		<isNotNull prepend="," property="cover1">
+			cover1 = #cover1#
+		</isNotNull>
+		<isNotNull prepend="," property="cover2">
+			cover2 = #cover2#
+		</isNotNull>
+		<isNotNull prepend="," property="topFlag">
+			topFlag = #topFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="recycleFlag">
+			recycleFlag = #recycleFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="topTime">
+			topTime = #topTime#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwWorksTag">
+		select * from kpkp_works_tag where tagId=#tagId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwWorksTagCond" resultClass="kpkpWwwWorksTag" remapResults="true">
+		select kpkp_works_tag.* 
+		<dynamic prepend="">
+			<isNotNull prepend="," property="subUserId">
+				kpkp_user_subscribe.subTime as subTime
+			</isNotNull>
+		</dynamic>
+		from kpkp_works_tag 
+		<dynamic prepend="">
+			<isNotNull property="photoId">
+				inner join kpkp_works_photo_tag on kpkp_works_tag.tagId = kpkp_works_photo_tag.tagId
+			</isNotNull>
+			<isNotNull property="subUserId">
+				inner join kpkp_user_subscribe on kpkp_works_tag.tagId = kpkp_user_subscribe.tagId
+			</isNotNull>
+			<isNotNull property="useUserId">
+				inner join kpkp_works_photo_tag on kpkp_works_tag.tagId = kpkp_works_photo_tag.tagId
+			</isNotNull>
+		</dynamic>
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_works_tag.tagId desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+	
+	<select id="countByCond" parameterClass="kpkpWwwWorksTagCond" resultClass="int">
+		select count(*) from kpkp_works_tag
+		<include refid="condition" />
+	</select>
+	
+	<insert id="insert" parameterClass="kpkpWwwWorksTag">
+		insert into kpkp_works_tag
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="tagId">
+		    	tagId = #tagId#
+			</isNotNull>
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="tagId">
+			SELECT @@IDENTITY
+			AS tagId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwWorksTag">
+		update kpkp_works_tag
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where tagId=#tagId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwWorksTagCond">
+		update kpkp_works_tag
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_works_tag where tagId = #tagId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwWorksTagCond">
+		delete from kpkp_works_tag
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwWorksTagCond"
+		resultClass="kpkpWwwWorksTag" remapResults="true">
+		select $statsParam$ from kpkp_works_tag
+		<include refid="condition" />
+	</select>
+</sqlMap>

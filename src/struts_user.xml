@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<package name="user_io_login" extends="lsy" namespace="/user/io/login">
+	    <action name="prep" class="lsyWwwUserLoginAction" method="prep">
+			<interceptor-ref name="modelDriven" />
+			<interceptor-ref name="scopedModelDriven" />
+			<interceptor-ref name="chain" />
+			<interceptor-ref name="basicStack" />
+			<result name="success">/jsp/www/user/io/login.jsp</result>
+		</action>
+
+		<action name="deal" class="lsyWwwUserLoginAction" method="deal">
+			<result name="input" type="chain">
+				<param name="actionName">prep</param>
+			</result>
+			<result name="none" type="redirectAction">
+				<param name="actionName">bind</param>
+				<param name="namespace">/user/my/setting</param>
+			</result>
+			<result name="login" type="redirect">/index.html</result>
+			<result name="success" type="redirect">${url}</result>
+		</action>
+
+		<action name="exit" class="lsyWwwUserLoginAction" method="exit">
+			<result name="success" type="redirectAction">
+				<param name="actionName">prep</param>
+				<param name="namespace">/user/io/login</param>
+			</result>
+		</action>
+	</package>
+		
+</struts>

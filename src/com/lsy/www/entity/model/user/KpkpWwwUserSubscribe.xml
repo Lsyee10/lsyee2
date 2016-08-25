@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwUserSubscribeMapper">
+	<typeAlias alias="kpkpWwwUserSubscribe" type="com.lsy.www.entity.model.user.KpkpWwwUserSubscribe" />
+	<typeAlias alias="kpkpWwwUserSubscribeCond" type="com.lsy.www.entity.cond.user.KpkpWwwUserSubscribeCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="subId">
+			    kpkp_user_subscribe.subId = #subId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+			    kpkp_user_subscribe.userId = #userId#
+			</isNotNull>
+			<isNotNull prepend="and" property="tagId">
+			    kpkp_user_subscribe.tagId = #tagId#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="userId">
+			userId = #userId#
+		</isNotNull>
+		<isNotNull prepend="," property="tagId">
+			tagId = #tagId#
+		</isNotNull>
+		<isNotNull prepend="," property="subTime">
+			subTime = #subTime#
+		</isNotNull>
+	</sql>
+	
+	<select id="query" parameterClass="int" resultClass="kpkpWwwUserSubscribe">
+		select * from kpkp_user_subscribe where subId=#subId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwUserSubscribeCond" resultClass="kpkpWwwUserSubscribe">
+		select kpkp_user_subscribe.* from kpkp_user_subscribe inner join (select kpkp_user_subscribe.subId from kpkp_user_subscribe
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_user_subscribe.subId desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+		) as kpkp_user_subscribe_index using(subId)
+	</select>
+	
+	<select id="countByCond" parameterClass="kpkpWwwUserSubscribeCond" resultClass="int">
+		select count(*) from kpkp_user_subscribe
+		<include refid="condition" />
+	</select>
+
+	<insert id="insert" parameterClass="kpkpWwwUserSubscribe">
+		insert into kpkp_user_subscribe
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="subId">
+			SELECT @@IDENTITY
+			AS subId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwUserSubscribe">
+		update kpkp_user_subscribe
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where subId=#subId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwUserSubscribeCond">
+		update kpkp_user_subscribe
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_user_subscribe where subId=#subId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwUserSubscribeCond">
+		delete from kpkp_user_subscribe
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwUserSubscribeCond"
+		resultClass="kpkpWwwUserSubscribe" remapResults="true">
+		select $statsParam$ from kpkp_user_subscribe
+		<include refid="condition" />
+	</select>
+</sqlMap>

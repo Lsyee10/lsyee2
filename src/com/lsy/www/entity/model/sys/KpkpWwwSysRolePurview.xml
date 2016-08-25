@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwSysRolePurviewMapper">
+	<typeAlias alias="kpkpWwwSysRolePurview" type="com.lsy.www.entity.model.sys.KpkpWwwSysRolePurview" />
+	<typeAlias alias="kpkpWwwSysRolePurviewCond" type="com.lsy.www.entity.cond.sys.KpkpWwwSysRolePurviewCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+		<isNotNull prepend="and" property="id">
+		    id = #id#
+		</isNotNull>
+		<isNotNull prepend="and" property="roleId">
+		    roleId = #roleId#
+		</isNotNull>
+		<isNotNull prepend="and" property="purviewId">
+		    purviewId = #purviewId#
+		</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="roleId">
+			roleId = #roleId#
+		</isNotNull>
+		<isNotNull prepend="," property="purviewId">
+			purviewId = #purviewId#
+		</isNotNull>
+	</sql>
+	
+	<select id="query" parameterClass="int" resultClass="kpkpWwwSysRolePurview">
+		select * from kpkp_sys_role_purview where id=#id#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwSysRolePurviewCond" resultClass="kpkpWwwSysRolePurview">
+		select * from kpkp_sys_role_purview
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwSysRolePurviewCond" resultClass="int">
+		select count(*) from kpkp_sys_role_purview
+		<include refid="condition" />
+	</select>
+
+	<insert id="insert" parameterClass="kpkpWwwSysRolePurview">
+		insert into kpkp_sys_role_purview
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY
+			AS id
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwSysRolePurview">
+		update kpkp_sys_role_purview
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where id=#id#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwSysRolePurviewCond">
+		update kpkp_sys_role_purview
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_sys_role_purview where id = #id#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwSysRolePurviewCond">
+		delete from kpkp_sys_role_purview
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwSysRolePurviewCond"
+		resultClass="kpkpWwwSysRolePurview" remapResults="true">
+		select $statsParam$ from kpkp_sys_role_purview
+		<include refid="condition" />
+	</select>
+</sqlMap>

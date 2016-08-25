@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwActivityJuryMapper">
+	<typeAlias alias="kpkpWwwActivityJury" type="com.lsy.www.entity.model.activity.KpkpWwwActivityJury" />
+	<typeAlias alias="kpkpWwwActivityJuryCond" type="com.lsy.www.entity.cond.activity.KpkpWwwActivityJuryCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="juryId">
+			    kpkp_activity_jury.juryId = #juryId#
+			</isNotNull>
+			<isNotNull prepend="and" property="activityId">
+			    kpkp_activity_jury.activityId = #activityId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+			    kpkp_activity_jury.userId = #userId#
+			</isNotNull>
+			<isNotNull prepend="and" property="roleFlag">
+			    kpkp_activity_jury.roleFlag = #roleFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="stateFlag">
+			    kpkp_activity_jury.stateFlag = #stateFlag#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="activityId">
+			activityId = #activityId#
+		</isNotNull>
+		<isNotNull prepend="," property="userId">
+			userId = #userId#
+		</isNotNull>
+		<isNotNull prepend="," property="roleFlag">
+			roleFlag = #roleFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="stateFlag">
+			stateFlag = #stateFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwActivityJury">
+		select * from kpkp_activity_jury where juryId=#juryId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwActivityJuryCond" resultClass="kpkpWwwActivityJury">
+		select kpkp_activity_jury.*, kpkp_user_account.avatar as avatar, kpkp_user_account.nickname as nickname 
+		from kpkp_activity_jury inner join (select juryId from kpkp_activity_jury 
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_activity_jury.juryId desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+		) as kpkp_activity_jury_index using(juryId) 
+		inner join kpkp_user_account on kpkp_activity_jury.userId = kpkp_user_account.userId
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwActivityJuryCond" resultClass="int">
+		select count(*) from kpkp_activity_jury
+		<include refid="condition" />
+	</select>
+	
+	<insert id="insert" parameterClass="kpkpWwwActivityJury">
+		insert into kpkp_activity_jury
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="juryId">
+			SELECT @@IDENTITY
+			AS juryId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwActivityJury">
+		update kpkp_activity_jury
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where juryId=#juryId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwActivityJuryCond">
+		update kpkp_activity_jury
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_activity_jury where juryId = #juryId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwActivityJuryCond">
+		delete from kpkp_activity_jury
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwActivityJuryCond" resultClass="kpkpWwwActivityJury" remapResults="true">
+		select $statsParam$ from kpkp_activity_jury
+		<include refid="condition" />
+	</select>
+</sqlMap>

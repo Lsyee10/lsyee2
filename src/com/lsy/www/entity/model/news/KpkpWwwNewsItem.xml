@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwNewsItemMapper">
+	<typeAlias alias="kpkpWwwNewsItem" type="com.lsy.www.entity.model.news.KpkpWwwNewsItem" />
+	<typeAlias alias="kpkpWwwNewsItemCond" type="com.lsy.www.entity.cond.news.KpkpWwwNewsItemCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="newsId">
+			    kpkp_news_item.newsId = #newsId#
+			</isNotNull>
+			<isNotNull prepend="and" property="columnId">
+			    kpkp_news_item.columnId = #columnId#
+			</isNotNull>
+			<isNotNull prepend="and" property="excludeNewsId">
+			    kpkp_news_item.newsId not in ($excludeNewsId$)
+			</isNotNull>
+			<isNotNull prepend="and" property="excludeColumnId">
+			    kpkp_news_item.columnId not in ($excludeColumnId$)
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+			    kpkp_news_item.userId = #userId#
+			</isNotNull>
+			<isNotEmpty prepend="and" property="title">
+			    kpkp_news_item.title = #title#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="tagRelate">
+			    kpkp_news_item.tag regexp #tagRelate#
+			</isNotEmpty>
+			<isNotNull prepend="and" property="topFlag">
+			    kpkp_news_item.topFlag = #topFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="pubFlag">
+			    kpkp_news_item.pubFlag = #pubFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="replyFlag">
+			    kpkp_news_item.replyFlag = #replyFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="imageFlag">
+			    kpkp_news_item.imageFlag = #imageFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="videoFlag">
+			    kpkp_news_item.videoFlag = #videoFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="recycleFlag">
+			    kpkp_news_item.recycleFlag = #recycleFlag#
+			</isNotNull>
+			<isNotEmpty prepend="and" property="tagName">
+			    kpkp_news_tag.tagName = #tagName#
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="columnId">
+			columnId = #columnId#
+		</isNotNull>
+		<isNotNull prepend="," property="userId">
+			userId = #userId#
+		</isNotNull>
+		<isNotNull prepend="," property="title">
+			title = #title#
+		</isNotNull>
+		<isNotNull prepend="," property="author">
+			author = #author#
+		</isNotNull>
+		<isNotNull prepend="," property="summary">
+			summary = #summary#
+		</isNotNull>
+		<isNotNull prepend="," property="cover1">
+			cover1 = #cover1#
+		</isNotNull>
+		<isNotNull prepend="," property="cover2">
+			cover2 = #cover2#
+		</isNotNull>
+		<isNotNull prepend="," property="pubDate">
+			pubDate = #pubDate#
+		</isNotNull>
+		<isNotNull prepend="," property="tag">
+			tag = #tag#
+		</isNotNull>
+		<isNotNull prepend="," property="views">
+			views = #views#
+		</isNotNull>
+		<isNotNull prepend="," property="comments">
+			comments = #comments#
+		</isNotNull>
+		<isNotNull prepend="," property="topFlag">
+			topFlag = #topFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="pubFlag">
+			pubFlag = #pubFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="replyFlag">
+			replyFlag = #replyFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="imageFlag">
+			imageFlag = #imageFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="videoFlag">
+			videoFlag = #videoFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="recycleFlag">
+			recycleFlag = #recycleFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+		<isNotNull prepend="," property="pubTime">
+			pubTime = #pubTime#
+		</isNotNull>
+		<isNotNull prepend="," property="topTime">
+			topTime = #topTime#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwNewsItem">
+		select kpkp_news_item.* from kpkp_news_item where newsId=#newsId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwNewsItemCond" resultClass="kpkpWwwNewsItem" remapResults="true">
+		select kpkp_news_item.* 
+		<dynamic prepend="">
+			<isNotNull prepend="," property="columnFlag">
+				kpkp_news_column.name as columnName
+			</isNotNull>
+		</dynamic>
+		from kpkp_news_item
+		<dynamic prepend="">
+			<isNotNull property="tagName">
+				inner join kpkp_news_tag on kpkp_news_item.newsId = kpkp_news_tag.newsId
+			</isNotNull>
+			<isNotNull property="columnFlag">
+				inner join kpkp_news_column on kpkp_news_item.columnId = kpkp_news_column.columnId
+			</isNotNull>
+		</dynamic>
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_news_item.newsId desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwNewsItemCond" resultClass="int">
+		select count(*) from kpkp_news_item
+		<dynamic prepend="">
+			<isNotNull property="tagName">
+				inner join kpkp_news_tag on kpkp_news_item.newsId = kpkp_news_tag.newsId
+			</isNotNull>
+			<isNotNull property="columnFlag">
+				inner join kpkp_news_column on kpkp_news_item.columnId = kpkp_news_column.columnId
+			</isNotNull>
+		</dynamic>
+		<include refid="condition" />
+	</select>
+	
+	<insert id="insert" parameterClass="kpkpWwwNewsItem">
+		insert into kpkp_news_item
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="newsId">
+			SELECT @@IDENTITY
+			AS newsId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwNewsItem">
+		update kpkp_news_item
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where newsId=#newsId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwNewsItemCond">
+		update kpkp_news_item
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from
+		kpkp_news_item where newsId = #newsId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwNewsItemCond">
+		delete from kpkp_news_item
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwNewsItemCond"
+		resultClass="kpkpWwwNewsItem" remapResults="true">
+		select $statsParam$ from kpkp_news_item
+		<include refid="condition" />
+	</select>
+</sqlMap>

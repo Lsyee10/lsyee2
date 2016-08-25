@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwUserStatsDayMapper">
+	<typeAlias alias="kpkpWwwUserStatsDay" type="com.lsy.www.entity.model.user.KpkpWwwUserStatsDay" />
+	<typeAlias alias="kpkpWwwUserStatsDayCond" type="com.lsy.www.entity.cond.user.KpkpWwwUserStatsDayCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="id">
+			    kpkp_user_stats_day.id = #id#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+			    kpkp_user_stats_day.userId = #userId#
+			</isNotNull>
+			<isNotNull prepend="and" property="date">
+			    kpkp_user_stats_day.date = #date#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="userId">
+			userId = #userId#
+		</isNotNull>
+		<isNotNull prepend="," property="date">
+			date = #date#
+		</isNotNull>
+		<isNotNull prepend="," property="logins">
+			logins = #logins#
+		</isNotNull>
+		<isNotNull prepend="," property="tasks">
+			tasks = #tasks#
+		</isNotNull>
+		<isNotNull prepend="," property="stations">
+			stations = #stations#
+		</isNotNull>
+		<isNotNull prepend="," property="applies">
+			applies = #applies#
+		</isNotNull>
+		<isNotNull prepend="," property="praises">
+			praises = #praises#
+		</isNotNull>
+		<isNotNull prepend="," property="comments">
+			comments = #comments#
+		</isNotNull>
+		<isNotNull prepend="," property="views">
+			views = #views#
+		</isNotNull>
+		<isNotNull prepend="," property="choices">
+			choices = #choices#
+		</isNotNull>
+		<isNotNull prepend="," property="awards">
+			awards = #awards#
+		</isNotNull>
+		<isNotNull prepend="," property="tags">
+			tags = #tags#
+		</isNotNull>
+		<isNotNull prepend="," property="fans">
+			fans = #fans#
+		</isNotNull>
+		<isNotNull prepend="," property="focus">
+			focus = #focus#
+		</isNotNull>
+		<isNotNull prepend="," property="topics">
+			topics = #topics#
+		</isNotNull>
+		<isNotNull prepend="," property="photos">
+			photos = #photos#
+		</isNotNull>
+		<isNotNull prepend="," property="points">
+			points = #points#
+		</isNotNull>
+		<isNotNull prepend="," property="trades">
+			trades = #trades#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwUserStatsDay">
+		select * from kpkp_user_stats_day where id=#id#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwUserStatsDayCond" resultClass="kpkpWwwUserStatsDay">
+		select kpkp_user_stats_day.* from kpkp_user_stats_day inner join (select kpkp_user_stats_day.id from kpkp_user_stats_day
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_user_stats_day.id desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+		) as kpkp_user_stats_day_index using(id)
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwUserStatsDayCond" resultClass="int">
+		select count(*) from kpkp_user_stats_day
+		<include refid="condition" />
+	</select>
+
+	<insert id="insert" parameterClass="kpkpWwwUserStatsDay">
+		insert into kpkp_user_stats_day
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY
+			AS id
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwUserStatsDay">
+		update kpkp_user_stats_day
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where id=#id#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwUserStatsDayCond">
+		update kpkp_user_stats_day
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_user_stats_day where id=#id#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwUserStatsDayCond">
+		delete from kpkp_user_stats_day
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwUserStatsDayCond"
+		resultClass="kpkpWwwUserStatsDay" remapResults="true">
+		select $statsParam$ from kpkp_user_stats_day
+		<include refid="condition" />
+	</select>
+</sqlMap>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwSysAreaMapper">
+	<typeAlias alias="kpkpWwwSysArea" type="com.lsy.www.entity.model.sys.KpkpWwwSysArea" />
+	<typeAlias alias="kpkpWwwSysAreaCond" type="com.lsy.www.entity.cond.sys.KpkpWwwSysAreaCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="code">
+				code = #code#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="parentCode">
+				parentCode = #parentCode#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="level">
+				level = #level#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="name">
+				name like '$name$%'
+			</isNotEmpty>
+			<isNotNull prepend="and" property="recycleFlag">
+				recycleFlag = #recycleFlag#
+			</isNotNull>
+		</dynamic>
+		</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="code">
+			code = #code#
+		</isNotNull>
+		<isNotNull prepend="," property="parentCode">
+			parentCode = #parentCode#
+		</isNotNull>
+		<isNotNull prepend="," property="level">
+			level = #level#
+		</isNotNull>
+		<isNotNull prepend="," property="name">
+			name = #name#
+		</isNotNull>
+		<isNotNull prepend="," property="recycleFlag">
+			recycleFlag = #recycleFlag#
+		</isNotNull>
+	</sql>
+	
+	<select id="query" parameterClass="String" resultClass="kpkpWwwSysArea">
+		select * from kpkp_sys_area where code=#code#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwSysAreaCond" resultClass="kpkpWwwSysArea">
+		select * from kpkp_sys_area
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwSysAreaCond" resultClass="int">
+		select count(*) from kpkp_sys_area
+		<include refid="condition" />
+	</select>
+
+	<insert id="insert" parameterClass="kpkpWwwSysArea">
+		insert into kpkp_sys_area
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwSysArea">
+		update kpkp_sys_area
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where code=#code#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwSysAreaCond">
+		update kpkp_sys_area
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="String">
+		delete from kpkp_sys_area where code = #code#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwSysAreaCond">
+		delete from kpkp_sys_area
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwSysAreaCond"
+		resultClass="kpkpWwwSysArea" remapResults="true">
+		select $statsParam$ from kpkp_sys_area
+		<include refid="condition" />
+	</select>
+</sqlMap>

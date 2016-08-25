@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwPushHomeMapper">
+	<typeAlias alias="kpkpWwwPushHome" type="com.lsy.www.entity.model.push.KpkpWwwPushHome" />
+	<typeAlias alias="kpkpWwwPushHomeCond" type="com.lsy.www.entity.cond.push.KpkpWwwPushHomeCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="id">
+			    id = #id#
+			</isNotNull>
+			<isNotNull prepend="and" property="pubFlag">
+			    pubFlag = #pubFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="bizFlag">
+			    bizFlag = #bizFlag#
+			</isNotNull>
+			<isNotEmpty prepend="and" property="pubTimeSt">
+				<![CDATA[ pubTime >= #pubTimeSt# ]]>
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="bizFlag">
+			bizFlag = #bizFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="bindId">
+			bindId = #bindId#
+		</isNotNull>
+		<isNotNull prepend="," property="pubFlag">
+			pubFlag = #pubFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="pubTime">
+			pubTime = #pubTime#
+		</isNotNull>
+		<isNotNull prepend="," property="adminId">
+			adminId = #adminId#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwPushHome">
+		select * from kpkp_push_home where id=#id#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwPushHomeCond" resultClass="kpkpWwwPushHome">
+		select * from kpkp_push_home inner join (select id from kpkp_push_home
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				id desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+		) as kpkp_push_home_index using(id)
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwPushHomeCond" resultClass="int">
+		select count(id) from kpkp_push_home inner join (select id from kpkp_push_home
+		<include refid="condition" />)
+	</select>
+	
+	<insert id="insert" parameterClass="kpkpWwwPushHome">
+		insert into kpkp_push_home
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY
+			AS id
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwPushHome">
+		update kpkp_push_home
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where id=#id#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwPushHomeCond">
+		update kpkp_push_home
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_push_home where id = #id#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwPushHomeCond">
+		delete from kpkp_push_home
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwPushHomeCond"
+		resultClass="kpkpWwwPushHome" remapResults="true">
+		select $statsParam$ from kpkp_push_home
+		<include refid="condition" />
+	</select>
+</sqlMap>

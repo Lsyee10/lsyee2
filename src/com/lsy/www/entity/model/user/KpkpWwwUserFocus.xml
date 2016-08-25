@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwUserFocusMapper">
+	<typeAlias alias="kpkpWwwUserFocus" type="com.lsy.www.entity.model.user.KpkpWwwUserFocus" />
+	<typeAlias alias="kpkpWwwUserFocusCond" type="com.lsy.www.entity.cond.user.KpkpWwwUserFocusCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="focusId">
+			    kpkp_user_focus.focusId = #focusId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+			    kpkp_user_focus.userId = #userId#
+			</isNotNull>
+			<isNotNull prepend="and" property="shooterId">
+			    kpkp_user_focus.shooterId = #shooterId#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="userId">
+			userId = #userId#
+		</isNotNull>
+		<isNotNull prepend="," property="shooterId">
+			shooterId = #shooterId#
+		</isNotNull>
+		<isNotNull prepend="," property="focusTime">
+			focusTime = #focusTime#
+		</isNotNull>
+	</sql>
+	
+	<select id="query" parameterClass="int" resultClass="kpkpWwwUserFocus">
+		select * from kpkp_user_focus where focusId=#focusId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwUserFocusCond" resultClass="kpkpWwwUserFocus">
+		select kpkp_user_focus.* from kpkp_user_focus inner join (select kpkp_user_focus.focusId from kpkp_user_focus
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_user_focus.focusId desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+		) as kpkp_user_focus_index using(focusId)
+	</select>
+	
+	<select id="queryByJoin" parameterClass="kpkpWwwUserFocusCond" resultClass="kpkpWwwUserFocus">
+		select kpkp_user_focus.*,kpkp_user_account.avatar,kpkp_user_account.nickname,kpkp_user_account.intro,
+		kpkp_user_stats_sum.photos,kpkp_user_stats_sum.fans,kpkp_user_stats_sum.focus
+		from kpkp_user_focus inner join (select kpkp_user_focus.focusId from kpkp_user_focus
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_user_focus.focusId desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+		) as kpkp_user_focus_index using(focusId)
+		<dynamic prepend="">
+			<isNotNull property="userId">
+				inner join kpkp_user_account on kpkp_user_focus.shooterId = kpkp_user_account.userId
+				inner join kpkp_user_stats_sum on kpkp_user_focus.shooterId = kpkp_user_stats_sum.userId
+			</isNotNull>
+			<isNotNull property="shooterId">
+				inner join kpkp_user_account on kpkp_user_focus.userId = kpkp_user_account.userId
+				inner join kpkp_user_stats_sum on kpkp_user_focus.userId = kpkp_user_stats_sum.userId
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwUserFocusCond" resultClass="int">
+		select count(*) from kpkp_user_focus
+		<include refid="condition" />
+	</select>
+
+	<insert id="insert" parameterClass="kpkpWwwUserFocus">
+		insert into kpkp_user_focus
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="focusId">
+			SELECT @@IDENTITY
+			AS focusId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwUserFocus">
+		update kpkp_user_focus
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where focusId=#focusId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwUserFocusCond">
+		update kpkp_user_focus
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_user_focus where focusId=#focusId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwUserFocusCond">
+		delete from kpkp_user_focus
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwUserFocusCond"
+		resultClass="kpkpWwwUserFocus" remapResults="true">
+		select $statsParam$ from kpkp_user_focus
+		<include refid="condition" />
+	</select>
+</sqlMap>

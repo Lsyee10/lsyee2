@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwChatGroupMsgMapper">
+	<typeAlias alias="kpkpWwwChatGroupMsg" type="com.lsy.www.entity.model.chat.KpkpWwwChatGroupMsg" />
+	<typeAlias alias="kpkpWwwChatGroupMsgCond" type="com.lsy.www.entity.cond.chat.KpkpWwwChatGroupMsgCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="msgId">
+			    kpkp_chat_group_msg.msgId = #msgId#
+			</isNotNull>
+			<isNotNull prepend="and" property="groupId">
+			    kpkp_chat_group_msg.groupId = #groupId#
+			</isNotNull>
+			<isNotNull prepend="and" property="senderId">
+			    kpkp_chat_group_msg.senderId = #senderId#
+			</isNotNull>
+			<isNotNull prepend="and" property="recycleFlag">
+			    kpkp_chat_group_msg.recycleFlag = #recycleFlag#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="groupId">
+			groupId = #groupId#
+		</isNotNull>
+		<isNotNull prepend="," property="senderId">
+			senderId = #senderId#
+		</isNotNull>
+		<isNotNull prepend="," property="content">
+			content = #content#
+		</isNotNull>
+		<isNotNull prepend="," property="recycleFlag">
+			recycleFlag = #recycleFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="sendTime">
+			sendTime = #sendTime#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwChatGroupMsg">
+		select * from kpkp_chat_group_msg where msgId=#msgId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwChatGroupMsgCond" resultClass="kpkpWwwChatGroupMsg">
+		select kpkp_chat_group_msg.*
+		<dynamic prepend="">
+			<isNotNull prepend="," property="groupId">
+				kpkp_user_account.avatar as senderAvatar, 
+				kpkp_user_account.nickname as senderNickname
+			</isNotNull>
+		</dynamic>
+		from kpkp_chat_group_msg inner join (select kpkp_chat_group_msg.msgId from kpkp_chat_group_msg
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_chat_group_msg.msgId desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+		) as kpkp_chat_group_msg_index using(msgId)
+		<dynamic prepend="">
+			<isNotNull property="groupId">
+				inner join kpkp_user_account on kpkp_chat_group_msg.senderId = kpkp_user_account.userId
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwChatGroupMsgCond" resultClass="int">
+		select count(*) from kpkp_chat_group_msg
+		<include refid="condition" />
+	</select>
+	
+	<insert id="insert" parameterClass="kpkpWwwChatGroupMsg">
+		insert into kpkp_chat_group_msg
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="msgId">
+			SELECT @@IDENTITY
+			AS msgId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwChatGroupMsg">
+		update kpkp_chat_group_msg
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where msgId=#msgId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwChatGroupMsgCond">
+		update kpkp_chat_group_msg
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_chat_group_msg where msgId = #msgId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwChatGroupMsgCond">
+		delete from kpkp_chat_group_msg
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwChatGroupMsgCond"
+		resultClass="kpkpWwwChatGroupMsg" remapResults="true">
+		select $statsParam$ from kpkp_chat_group_msg
+		<include refid="condition" />
+	</select>
+</sqlMap>

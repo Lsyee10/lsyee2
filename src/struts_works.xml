@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="works_topic" extends="kpkp" namespace="/works/topic">
+		<action name="prepCreate" class="kpkpWwwWorksTopicAction"
+			method="prepCreate">
+			<result name="success">/jsp/www/works/topic/create.jsp</result>
+		</action>
+
+		<action name="dealCreate" class="kpkpWwwWorksTopicAction"
+			method="dealCreate">
+			<result name="success" type="redirectAction">
+				<param name="actionName">jump</param>
+				<param name="namespace">/sys/return</param>
+				<param name="url">/user/my/works/topic.action?mode=list</param>
+			</result>
+		</action>
+
+		<action name="prepModify" class="kpkpWwwWorksTopicAction"
+			method="prepModify">
+			<result name="success">/jsp/www/works/topic/modify.jsp</result>
+		</action>
+
+		<action name="dealModify" class="kpkpWwwWorksTopicAction"
+			method="dealModify">
+			<result name="success" type="redirectAction">
+				<param name="actionName">jump</param>
+				<param name="namespace">/sys/return</param>
+				<param name="url">/user/my/works/topic.action?mode=list</param>
+			</result>
+		</action>
+
+		<action name="detail" class="kpkpWwwWorksTopicAction" method="detail">
+			<result name="success">/jsp/www/works/topic/detail.jsp</result>
+		</action>
+
+		<action name="recycle" class="kpkpWwwWorksTopicAction" method="recycle">
+			<result name="success" type="json">
+				<param name="root">action</param>
+			</result>
+		</action>
+
+		<action name="taskBack" class="kpkpWwwWorksTopicAction" method="taskBack">
+			<result name="success" type="json">
+				<param name="root">action</param>
+			</result>
+		</action>
+
+		<action name="stationBack" class="kpkpWwwWorksTopicAction"
+			method="stationBack">
+			<result name="success" type="json">
+				<param name="root">action</param>
+			</result>
+		</action>
+
+		<action name="choice" class="kpkpWwwWorksPhotoAction" method="choicePhotos">
+			<result name="success">/jsp/www/works/topic/choice.jsp</result>
+		</action>
+
+		<action name="newest" class="kpkpWwwWorksPhotoAction" method="newestPhotos">
+			<result name="success">/jsp/www/works/topic/newest.jsp</result>
+		</action>
+	</package>
+
+</struts>

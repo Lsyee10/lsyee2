@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwChatGroupSessMapper">
+	<typeAlias alias="kpkpWwwChatGroupSess" type="com.lsy.www.entity.model.chat.KpkpWwwChatGroupSess" />
+	<typeAlias alias="kpkpWwwChatGroupSessCond" type="com.lsy.www.entity.cond.chat.KpkpWwwChatGroupSessCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="sessId">
+			    kpkp_chat_group_sess.sessId = #sessId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+			    kpkp_chat_group_sess.userId = #userId#
+			</isNotNull>
+			<isNotNull prepend="and" property="groupId">
+			    kpkp_chat_group_sess.groupId = #groupId#
+			</isNotNull>
+			<isNotNull prepend="and" property="recycleFlag">
+			    kpkp_chat_group_sess.recycleFlag = #recycleFlag#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="userId">
+			userId = #userId#
+		</isNotNull>
+		<isNotNull prepend="," property="groupId">
+			groupId = #groupId#
+		</isNotNull>
+		<isNotNull prepend="," property="unreads">
+			unreads = #unreads#
+		</isNotNull>
+		<isNotNull prepend="," property="recycleFlag">
+			recycleFlag = #recycleFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="exitTime">
+			exitTime = #exitTime#
+		</isNotNull>
+		<isNotNull prepend="," property="joinTime">
+			joinTime = #joinTime#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwChatGroupSess">
+		select * from kpkp_chat_group_sess where sessId=#sessId#
+	</select>
+	
+	<select id="queryByCond" parameterClass="kpkpWwwChatGroupSessCond" resultClass="kpkpWwwChatGroupSess">
+		select kpkp_chat_group_sess.*
+		from kpkp_chat_group_sess inner join (select sessId from kpkp_chat_group_sess
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_chat_group_sess.sessId desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+		) as kpkp_chat_group_sess_index using(sessId)
+	</select>
+
+	<select id="queryByJoin" parameterClass="kpkpWwwChatGroupSessCond" resultClass="kpkpWwwChatGroupSess" remapResults="true">
+		select kpkp_chat_group_sess.*
+		<dynamic prepend="">
+			<isNotNull prepend="," property="userId">
+				kpkp_chat_group_item.name as groupName, 
+				kpkp_chat_group_item.users as groupUsers, 
+				kpkp_chat_group_item.lastMsg as groupLastMsg,
+				kpkp_chat_group_item.lastTime as groupLastTime,
+				kpkp_chat_group_item.lastSenderId as groupLastSenderId
+			</isNotNull>
+			<isNotNull prepend="," property="groupId">
+				kpkp_user_account.avatar as userAvatar,
+				kpkp_user_account.nickname as userNickname
+			</isNotNull>
+		</dynamic>
+		from kpkp_chat_group_sess inner join (select sessId from kpkp_chat_group_sess
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_chat_group_sess.sessId desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+		) as kpkp_chat_group_sess_index using(sessId)
+		<dynamic prepend="">
+			<isNotNull property="userId">
+				inner join kpkp_chat_group_item on kpkp_chat_group_sess.groupId = kpkp_chat_group_item.groupId
+			</isNotNull>
+			<isNotNull property="groupId">
+				inner join kpkp_user_account on kpkp_chat_group_sess.userId = kpkp_user_account.userId
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwChatGroupSessCond" resultClass="int">
+		select count(*) from kpkp_chat_group_sess
+		<include refid="condition" />
+	</select>
+	
+	<insert id="insert" parameterClass="kpkpWwwChatGroupSess">
+		insert into kpkp_chat_group_sess
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="sessId">
+			SELECT @@IDENTITY
+			AS sessId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwChatGroupSess">
+		update kpkp_chat_group_sess
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where sessId=#sessId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwChatGroupSessCond">
+		update kpkp_chat_group_sess
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_chat_group_sess where sessId = #sessId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwChatGroupSessCond">
+		delete from kpkp_chat_group_sess
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwChatGroupSessCond"
+		resultClass="kpkpWwwChatGroupSess" remapResults="true">
+		select $statsParam$ from kpkp_chat_group_sess
+		<include refid="condition" />
+	</select>
+</sqlMap>

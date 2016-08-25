@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwUserAuthMailMapper">
+	<typeAlias alias="kpkpWwwUserAuthMail" type="com.lsy.www.entity.model.user.KpkpWwwUserAuthMail" />
+	<typeAlias alias="kpkpWwwUserAuthMailCond" type="com.lsy.www.entity.cond.user.KpkpWwwUserAuthMailCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="mailId">
+			    mailId = #mailId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+			    userId = #userId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userIdNeq">
+			    userId != #userIdNeq#
+			</isNotNull>
+			<isNotEmpty prepend="and" property="email">
+			    email = #email#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="authCode">
+			    authCode = #authCode#
+			</isNotEmpty>
+			<isNotNull prepend="and" property="useFlag">
+			    useFlag = #useFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="checkFlag">
+			    checkFlag = #checkFlag#
+			</isNotNull>
+			<isNotEmpty prepend="and" property="sendTimeSt">
+				<![CDATA[ sendTime >= #sendTimeSt# ]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="sendTimeEd">
+				<![CDATA[ sendTime <= #sendTimeEd# ]]>
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="email">
+			email = #email#
+		</isNotNull>
+		<isNotNull prepend="," property="userId">
+			userId = #userId#
+		</isNotNull>
+		<isNotNull prepend="," property="content">
+			content = #content#
+		</isNotNull>
+		<isNotNull prepend="," property="authCode">
+			authCode = #authCode#
+		</isNotNull>
+		<isNotNull prepend="," property="useFlag">
+			useFlag = #useFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="sendTime">
+		    sendTime = #sendTime#
+	    </isNotNull>
+		<isNotNull prepend="," property="checkFlag">
+			checkFlag = #checkFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="checkTimes">
+			checkTimes = #checkTimes#
+		</isNotNull>
+	</sql>
+	
+	<select id="query" parameterClass="int" resultClass="kpkpWwwUserAuthMail">
+		select * from kpkp_user_auth_mail where mailId=#mailId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwUserAuthMailCond" resultClass="kpkpWwwUserAuthMail">
+		select * from kpkp_user_auth_mail inner join (select mailId from kpkp_user_auth_mail
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_user_auth_mail.mailId desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+		) as kpkp_user_auth_mail_index using(mailId)
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwUserAuthMailCond" resultClass="int">
+		select count(*) from kpkp_user_auth_mail
+		<include refid="condition" />
+	</select>
+
+	<insert id="insert" parameterClass="kpkpWwwUserAuthMail">
+		insert into kpkp_user_auth_mail
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="mailId">
+			SELECT @@IDENTITY
+			AS mailId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwUserAuthMail">
+		update kpkp_user_auth_mail
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where mailId=#mailId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwUserAuthMailCond">
+		update kpkp_user_auth_mail
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_user_auth_mail where mailId=#mailId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwUserAuthMailCond">
+		delete from kpkp_user_auth_mail
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwUserAuthMailCond"
+		resultClass="kpkpWwwUserAuthMail" remapResults="true">
+		select $statsParam$ from kpkp_user_auth_mail
+		<include refid="condition" />
+	</select>
+</sqlMap>

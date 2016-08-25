@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwActivityItemMapper">
+	<typeAlias alias="kpkpWwwActivityItem" type="com.lsy.www.entity.model.activity.KpkpWwwActivityItem" />
+	<typeAlias alias="kpkpWwwActivityItemCond" type="com.lsy.www.entity.cond.activity.KpkpWwwActivityItemCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="activityId">
+			    kpkp_activity_item.activityId = #activityId#
+			</isNotNull>
+			<isNotEmpty prepend="and" property="name">
+			    kpkp_activity_item.name = #name#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="tag">
+			    kpkp_activity_item.tag = #tag#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="area">
+			    kpkp_activity_item.area = #area#
+			</isNotEmpty>
+			<isNotNull prepend="and" property="bizFlag">
+			    kpkp_activity_item.bizFlag = #bizFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="includeBizFlags">
+			    kpkp_activity_item.bizFlag in 
+				<iterate open="(" close=")" conjunction="," property="includeBizFlags" >
+                	#includeBizFlags[]#
+            	</iterate>
+			</isNotNull>
+			<isNotNull prepend="and" property="topFlag">
+			    kpkp_activity_item.topFlag = #topFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="pubFlag">
+			    kpkp_activity_item.pubFlag = #pubFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="freeFlag">
+			    kpkp_activity_item.freeFlag = #freeFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="limitFlag">
+			    kpkp_activity_item.limitFlag = #limitFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="appFlag">
+			    kpkp_activity_item.appFlag = #appFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="replyFlag">
+			    kpkp_activity_item.replyFlag = #replyFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="recycleFlag">
+			    kpkp_activity_item.recycleFlag = #recycleFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="adminId">
+			    kpkp_activity_item.adminId = #adminId#
+			</isNotNull>
+			<isNotNull prepend="and" property="provideUserId">
+			    kpkp_activity_provide.userId = #provideUserId#
+			</isNotNull>
+			<isNotEmpty prepend="and" property="middleDate">
+				 <![CDATA[ kpkp_activity_item.startDate < #middleDate# ]]>
+					and
+				 <![CDATA[ kpkp_activity_item.endDate >= #middleDate# ]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="startDateSt">
+				 <![CDATA[ kpkp_activity_item.startDate >= #startDateSt# ]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="startDateEd">
+				 <![CDATA[ kpkp_activity_item.startDate < #startDateEd# ]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="endDateSt">
+				 <![CDATA[ kpkp_activity_item.endDate >= #endDateSt# ]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="endDateEd">
+				 <![CDATA[ kpkp_activity_item.endDate < #endDateEd# ]]>
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="name">
+			name = #name#
+		</isNotNull>
+		<isNotNull prepend="," property="source">
+			source = #source#
+		</isNotNull>
+		<isNotNull prepend="," property="summary">
+			summary = #summary#
+		</isNotNull>
+		<isNotNull prepend="," property="prize">
+			prize = #prize#
+		</isNotNull>
+		<isNotNull prepend="," property="cover1">
+			cover1 = #cover1#
+		</isNotNull>
+		<isNotNull prepend="," property="cover2">
+			cover2 = #cover2#
+		</isNotNull>
+		<isNotNull prepend="," property="points">
+			points = #points#
+		</isNotNull>
+		<isNotNull prepend="," property="photos">
+			photos = #photos#
+		</isNotNull>
+		<isNotNull prepend="," property="joins">
+			joins = #joins#
+		</isNotNull>
+		<isNotNull prepend="," property="limits">
+			limits = #limits#
+		</isNotNull>
+		<isNotNull prepend="," property="startDate">
+			startDate = #startDate#
+		</isNotNull>
+		<isNotNull prepend="," property="endDate">
+			endDate = #endDate#
+		</isNotNull>
+		<isNotNull prepend="," property="origMoney">
+			origMoney = #origMoney#
+		</isNotNull>
+		<isNotNull prepend="," property="curMoney">
+			curMoney = #curMoney#
+		</isNotNull>
+		<isNotNull prepend="," property="tag">
+			tag = #tag#
+		</isNotNull>
+		<isNotNull prepend="," property="area">
+			area = #area#
+		</isNotNull>
+		<isNotNull prepend="," property="bizFlag">
+			bizFlag = #bizFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="topFlag">
+			topFlag = #topFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="pubFlag">
+			pubFlag = #pubFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="freeFlag">
+			freeFlag = #freeFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="limitFlag">
+			limitFlag = #limitFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="appFlag">
+			appFlag = #appFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="replyFlag">
+			replyFlag = #replyFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="recycleFlag">
+			recycleFlag = #recycleFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+		<isNotNull prepend="," property="topTime">
+			topTime = #topTime#
+		</isNotNull>
+		<isNotNull prepend="," property="pubTime">
+			pubTime = #pubTime#
+		</isNotNull>
+		<isNotNull prepend="," property="adminId">
+			adminId = #adminId#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwActivityItem">
+		select * from kpkp_activity_item where activityId=#activityId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwActivityItemCond" resultClass="kpkpWwwActivityItem">
+		select kpkp_activity_item.* from kpkp_activity_item
+		<dynamic prepend="">
+			<isNotNull property="provideUserId">
+				inner join kpkp_activity_provide on kpkp_activity_item.activityId = kpkp_activity_provide.activityId
+			</isNotNull>
+		</dynamic>
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwActivityItemCond" resultClass="int">
+		select count(*) from kpkp_activity_item
+		<dynamic prepend="">
+			<isNotNull property="provideUserId">
+				inner join kpkp_activity_provide on kpkp_activity_item.activityId = kpkp_activity_provide.activityId
+			</isNotNull>
+		</dynamic>
+		<include refid="condition" />
+	</select>
+	
+	<insert id="insert" parameterClass="kpkpWwwActivityItem">
+		insert into kpkp_activity_item
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="activityId">
+			SELECT @@IDENTITY
+			AS activityId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwActivityItem">
+		update kpkp_activity_item
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where activityId=#activityId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwActivityItemCond">
+		update kpkp_activity_item
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_activity_item where activityId = #activityId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwActivityItemCond">
+		delete from kpkp_activity_item
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwActivityItemCond" resultClass="kpkpWwwActivityItem" remapResults="true">
+		select $statsParam$ from kpkp_activity_item
+		<include refid="condition" />
+	</select>
+</sqlMap>

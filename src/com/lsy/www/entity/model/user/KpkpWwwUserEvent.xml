@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwUserEventMapper">
+	<typeAlias alias="kpkpWwwUserEvent" type="com.lsy.www.entity.model.user.KpkpWwwUserEvent" />
+	<typeAlias alias="kpkpWwwUserEventCond" type="com.lsy.www.entity.cond.user.KpkpWwwUserEventCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="eventId">
+			    kpkp_user_event.eventId = #eventId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+			    kpkp_user_event.userId = #userId#
+			</isNotNull>
+			<isNotNull prepend="and" property="producerId">
+			    kpkp_user_event.producerId = #producerId#
+			</isNotNull>
+			<isNotNull prepend="and" property="bindId">
+			    kpkp_user_event.bindId = #bindId#
+			</isNotNull>
+			<isNotNull prepend="and" property="bizFlag">
+			    kpkp_user_event.bizFlag = #bizFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="pushFlag">
+			    kpkp_user_event.pushFlag = #pushFlag#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="userId">
+			userId = #userId#
+		</isNotNull>
+		<isNotNull prepend="," property="producerId">
+			producerId = #producerId#
+		</isNotNull>
+		<isNotNull prepend="," property="bindId">
+			bindId = #bindId#
+		</isNotNull>
+		<isNotNull prepend="," property="bizFlag">
+			bizFlag = #bizFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="content">
+			content = #content#
+		</isNotNull>
+		<isNotNull prepend="," property="url">
+			url = #url#
+		</isNotNull>
+		<isNotNull prepend="," property="thumb">
+			thumb = #thumb#
+		</isNotNull>
+		<isNotNull prepend="," property="pushFlag">
+			pushFlag = #pushFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+		<isNotNull prepend="," property="pushTime">
+			pushTime = #pushTime#
+		</isNotNull>
+	</sql>
+	
+	<select id="query" parameterClass="int" resultClass="kpkpWwwUserEvent">
+		select * from kpkp_user_event where eventId=#eventId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwUserEventCond" resultClass="kpkpWwwUserEvent">
+		select kpkp_user_event.* 
+		<dynamic prepend="">
+			<isNotNull prepend="," property="userId">
+				kpkp_user_account.avatar as producerAvatar, 
+				kpkp_user_account.nickname as producerNickname
+			</isNotNull>
+		</dynamic>
+		from kpkp_user_event inner join (select eventId from kpkp_user_event
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_user_event.eventId desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+		) as kpkp_user_event_index using(eventId)
+		<dynamic prepend="">
+			<isNotNull property="userId">
+				inner join kpkp_user_account on kpkp_user_event.producerId = kpkp_user_account.userId
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwUserEventCond" resultClass="int">
+		select count(*) from kpkp_user_event
+		<include refid="condition" />
+	</select>
+
+	<insert id="insert" parameterClass="kpkpWwwUserEvent">
+		insert into kpkp_user_event
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="eventId">
+			SELECT @@IDENTITY
+			AS eventId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwUserEvent">
+		update kpkp_user_event
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where eventId=#eventId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwUserEventCond">
+		update kpkp_user_event
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_user_event where eventId=#eventId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwUserEventCond">
+		delete from kpkp_user_event
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwUserEventCond"
+		resultClass="kpkpWwwUserEvent" remapResults="true">
+		select $statsParam$ from kpkp_user_event
+		<include refid="condition" />
+	</select>
+</sqlMap>

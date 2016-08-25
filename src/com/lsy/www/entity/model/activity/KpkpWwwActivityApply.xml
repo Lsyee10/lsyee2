@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwActivityApplyMapper">
+	<typeAlias alias="kpkpWwwActivityApply" type="com.lsy.www.entity.model.activity.KpkpWwwActivityApply" />
+	<typeAlias alias="kpkpWwwActivityApplyCond" type="com.lsy.www.entity.cond.activity.KpkpWwwActivityApplyCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="applyId">
+			   kpkp_activity_apply.applyId = #applyId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+			    kpkp_activity_apply.userId = #userId#
+			</isNotNull>
+			<isNotNull prepend="and" property="activityId">
+			    kpkp_activity_apply.activityId = #activityId#
+			</isNotNull>
+			<isNotEmpty prepend="and" property="orderNum">
+			    kpkp_activity_apply.orderNum = #orderNum#
+			</isNotEmpty>
+			<isNotNull prepend="and" property="selectFlag">
+			    kpkp_activity_apply.selectFlag = #selectFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="confirmFlag">
+			    kpkp_activity_apply.confirmFlag = #confirmFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="tradeFlag">
+			    kpkp_activity_apply.tradeFlag = #tradeFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="provideFlag">
+			    kpkp_activity_apply.provideFlag = #provideFlag#
+			</isNotNull>
+			<isNotEmpty prepend="and" property="nickname">
+			    kpkp_activity_apply.nickname = #nickname#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="realname">
+			    kpkp_activity_apply.realname = #realname#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="cellphone">
+			    kpkp_activity_apply.cellphone = #cellphone#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="email">
+			    kpkp_activity_apply.email = #email#
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="userId">
+			userId = #userId#
+		</isNotNull>
+		<isNotNull prepend="," property="activityId">
+			activityId = #activityId#
+		</isNotNull>
+		<isNotNull prepend="," property="orderNum">
+			orderNum = #orderNum#
+		</isNotNull>
+		<isNotNull prepend="," property="orderScan">
+			orderScan = #orderScan#
+		</isNotNull>
+		<isNotNull prepend="," property="selectFlag">
+			selectFlag = #selectFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="confirmFlag">
+			confirmFlag = #confirmFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="tradeFlag">
+			tradeFlag = #tradeFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="provideFlag">
+			provideFlag = #provideFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="nickname">
+			nickname = #nickname#
+		</isNotNull>
+		<isNotNull prepend="," property="realname">
+			realname = #realname#
+		</isNotNull>
+		<isNotNull prepend="," property="cellphone">
+			cellphone = #cellphone#
+		</isNotNull>
+		<isNotNull prepend="," property="email">
+			email = #email#
+		</isNotNull>
+		<isNotNull prepend="," property="remark">
+			remark = #remark#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwActivityApply">
+		select * from kpkp_activity_apply where applyId=#applyId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwActivityApplyCond" resultClass="kpkpWwwActivityApply">
+		select kpkp_activity_apply.*, kpkp_user_account.avatar as avatar, kpkp_user_account.nickname as nickname , kpkp_user_account.intro as intro 
+		from kpkp_activity_apply inner join(select kpkp_activity_apply.applyId from kpkp_activity_apply
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_activity_apply.applyId desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+		) as kpkp_activity_apply_index using(applyId)
+		inner join kpkp_user_account on kpkp_activity_apply.userId = kpkp_user_account.userId
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwActivityApplyCond" resultClass="int">
+		select count(*) from kpkp_activity_apply
+		<include refid="condition" />
+	</select>
+	
+	<insert id="insert" parameterClass="kpkpWwwActivityApply">
+		insert into kpkp_activity_apply
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="applyId">
+			SELECT @@IDENTITY
+			AS applyId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwActivityApply">
+		update kpkp_activity_apply
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where applyId=#applyId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwActivityApplyCond">
+		update kpkp_activity_apply
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_activity_apply where applyId = #applyId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwActivityApplyCond">
+		delete from kpkp_activity_apply
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwActivityApplyCond"
+		resultClass="kpkpWwwActivityApply" remapResults="true">
+		select $statsParam$ from kpkp_activity_apply
+		<include refid="condition" />
+	</select>
+</sqlMap>

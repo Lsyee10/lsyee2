@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwWorksTopicMapper">
+	<typeAlias alias="kpkpWwwWorksTopic" type="com.lsy.www.entity.model.works.KpkpWwwWorksTopic" />
+	<typeAlias alias="kpkpWwwWorksTopicCond" type="com.lsy.www.entity.cond.works.KpkpWwwWorksTopicCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="topicId">
+			    kpkp_works_topic.topicId = #topicId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+			    kpkp_works_topic.userId = #userId#
+			</isNotNull>
+			<isNotNull prepend="and" property="taskId">
+			    kpkp_works_topic.taskId = #taskId#
+			</isNotNull>
+			<isNotNull prepend="and" property="stationId">
+			    kpkp_works_topic.stationId = #stationId#
+			</isNotNull>
+			<isNotNull prepend="and" property="recycleFlag">
+			    kpkp_works_topic.recycleFlag = #recycleFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="topFlag">
+			    kpkp_works_topic.topFlag = #topFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="focusUserId">
+				kpkp_user_focus.userId = #focusUserId#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="userId">
+			 userId = #userId#
+		</isNotNull>
+		<isNotNull prepend="," property="taskId">
+			taskId = #taskId#
+		</isNotNull>
+		<isNotNull prepend="," property="stationId">
+			stationId = #stationId#
+		</isNotNull>
+		<isNotNull prepend="," property="title">
+			title = #title#
+		</isNotNull>
+		<isNotNull prepend="," property="intro">
+			intro = #intro#
+		</isNotNull>
+		<isNotNull prepend="," property="views">
+			views = #views#
+		</isNotNull>
+		<isNotNull prepend="," property="praises">
+			praises = #praises#
+		</isNotNull>
+		<isNotNull prepend="," property="photos">
+			photos = #photos#
+		</isNotNull>
+		<isNotNull prepend="," property="comments">
+			comments = #comments#
+		</isNotNull>
+		<isNotNull prepend="," property="img1">
+			img1 = #img1#
+		</isNotNull>
+		<isNotNull prepend="," property="img2">
+			img2 = #img2#
+		</isNotNull>
+		<isNotNull prepend="," property="img3">
+			img3 = #img3#
+		</isNotNull>
+		<isNotNull prepend="," property="img4">
+			img4 = #img4#
+		</isNotNull>
+		<isNotNull prepend="," property="country">
+			country = #country#
+		</isNotNull>
+		<isNotNull prepend="," property="province">
+			province = #province#
+		</isNotNull>
+		<isNotNull prepend="," property="city">
+			city = #city#
+		</isNotNull>
+		<isNotNull prepend="," property="location">
+			location = #location#
+		</isNotNull>
+		<isNotNull prepend="," property="latitude">
+			latitude = #latitude#
+		</isNotNull>
+		<isNotNull prepend="," property="longitude">
+			longitude = #longitude#
+		</isNotNull>
+		<isNotNull prepend="," property="topFlag">
+			topFlag = #topFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="topTime">
+			topTime = #topTime#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+		<isNotNull prepend="," property="recycleFlag">
+			recycleFlag = #recycleFlag#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwWorksTopic">
+		select * from kpkp_works_topic where topicId=#topicId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwWorksTopicCond" resultClass="kpkpWwwWorksTopic">
+		select kpkp_works_topic.* 
+		<dynamic prepend="">
+			<isNotNull prepend="," property="profileFlag">
+				kpkp_user_account.avatar as avatar,
+				kpkp_user_account.nickname as nickname
+			</isNotNull>
+		</dynamic>
+		from kpkp_works_topic
+		<isNotNull property="focusUserId">
+			inner join kpkp_user_focus on kpkp_works_topic.userId = kpkp_user_focus.shooterId
+		</isNotNull>
+		<isNotNull property="profileFlag">
+			inner join kpkp_user_account on kpkp_works_topic.userId = kpkp_user_account.userId
+		</isNotNull>
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwWorksTopicCond" resultClass="int">
+		select count(*) from kpkp_works_topic
+		<isNotNull property="focusUserId">
+			inner join kpkp_user_focus on kpkp_works_topic.userId = kpkp_user_focus.shooterId
+		</isNotNull>
+		<include refid="condition" />
+	</select>
+	
+	<insert id="insert" parameterClass="kpkpWwwWorksTopic">
+		insert into kpkp_works_topic
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="topicId">
+			SELECT @@IDENTITY
+			AS topicId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwWorksTopic">
+		update kpkp_works_topic
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where topicId=#topicId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwWorksTopicCond">
+		update kpkp_works_topic
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_works_topic where topicId = #topicId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwWorksTopicCond">
+		delete from kpkp_works_topic
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwWorksTopicCond"
+		resultClass="kpkpWwwWorksTopic" remapResults="true">
+		select $statsParam$ from kpkp_works_topic
+		<include refid="condition" />
+	</select>
+</sqlMap>

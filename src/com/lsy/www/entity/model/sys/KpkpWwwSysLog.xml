@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwSysLogMapper">
+	<typeAlias alias="kpkpWwwSysLog" type="com.lsy.www.entity.model.sys.KpkpWwwSysLog" />
+	<typeAlias alias="kpkpWwwSysLogCond" type="com.lsy.www.entity.cond.sys.KpkpWwwSysLogCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+		<isNotNull prepend="and" property="logId">
+		    logId = #logId#
+		</isNotNull>
+		<isNotEmpty prepend="and" property="account">
+		    account = #account#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ip">
+		    ip = #ip#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="handle">
+		    handle = #handle#
+		</isNotEmpty>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="account">
+			account = #account#
+		</isNotNull>
+		<isNotNull prepend="," property="ip">
+			ip = #ip#
+		</isNotNull>
+		<isNotNull prepend="," property="handle">
+			handle = #handle#
+		</isNotNull>
+		<isNotNull prepend="," property="param">
+			param = #param#
+		</isNotNull>
+		<isNotNull prepend="," property="result">
+			result = #result#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+	</sql>
+	
+	<select id="query" parameterClass="int" resultClass="kpkpWwwSysLog">
+		select * from kpkp_sys_log where logId=#logId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwSysLogCond" resultClass="kpkpWwwSysLog">
+		select * from kpkp_sys_log
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwSysLogCond" resultClass="int">
+		select count(*) from kpkp_sys_log
+		<include refid="condition" />
+	</select>
+
+	<insert id="insert" parameterClass="kpkpWwwSysLog">
+		insert into kpkp_sys_log
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="logId">
+			SELECT @@IDENTITY
+			AS logId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwSysLog">
+		update kpkp_sys_log
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where logId=#logId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwSysLogCond">
+		update kpkp_sys_log
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_sys_log where logId = #logId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwSysLogCond">
+		delete from kpkp_sys_log
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwSysLogCond"
+		resultClass="kpkpWwwSysLog" remapResults="true">
+		select $statsParam$ from kpkp_sys_log
+		<include refid="condition" />
+	</select>
+</sqlMap>

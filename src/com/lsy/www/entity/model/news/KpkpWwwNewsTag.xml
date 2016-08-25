@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwNewsTagMapper">
+	<typeAlias alias="kpkpWwwNewsTag" type="com.lsy.www.entity.model.news.KpkpWwwNewsTag" />
+	<typeAlias alias="kpkpWwwNewsTagCond" type="com.lsy.www.entity.cond.news.KpkpWwwNewsTagCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="newsId">
+				newsId = #newsId#
+			</isNotNull>
+			<isNotEmpty prepend="and" property="tagName">
+				tagName = #tagName#
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="newsId">
+			newsId = #newsId#
+		</isNotNull>
+		<isNotNull prepend="," property="tagName">
+			tagName = #tagName#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwNewsTag">
+		select * from kpkp_news_tag where id=#id#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwNewsTagCond" resultClass="kpkpWwwNewsTag">
+		select * from kpkp_news_tag
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_news_tag.id desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwNewsTagCond" resultClass="int">
+		select count(*) from kpkp_news_tag
+		<include refid="condition" />
+	</select>
+
+	<insert id="insert" parameterClass="kpkpWwwNewsTag">
+		insert into kpkp_news_tag
+		<dynamic prepend="set">
+			<include refid="field" />
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY
+			AS id
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwNewsTag">
+		update kpkp_news_tag
+		<dynamic prepend="set">
+			<include refid="field" />
+		</dynamic>
+		where id=#id#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwNewsTagCond">
+		update kpkp_news_tag
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_news_tag where id = #id#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwNewsTagCond">
+		delete from kpkp_news_tag
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwNewsTagCond" resultClass="kpkpWwwNewsTag" remapResults="true">
+		select $statsParam$ from kpkp_news_tag
+		<include refid="condition" />
+	</select>
+</sqlMap>

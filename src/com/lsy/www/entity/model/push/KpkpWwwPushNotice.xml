@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwPushNoticeMapper">
+	<typeAlias alias="kpkpWwwPushNotice" type="com.lsy.www.entity.model.push.KpkpWwwPushNotice" />
+	<typeAlias alias="kpkpWwwPushNoticeCond" type="com.lsy.www.entity.cond.push.KpkpWwwPushNoticeCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="noticeId">
+			    noticeId = #noticeId#
+			</isNotNull>
+			<isNotNull prepend="and" property="pubFlag">
+			    pubFlag = #pubFlag#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="content">
+			content = #content#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+		<isNotNull prepend="," property="pubDate">
+			pubDate = #pubDate#
+		</isNotNull>
+		<isNotNull prepend="," property="pubTime">
+			pubTime = #pubTime#
+		</isNotNull>
+		<isNotNull prepend="," property="pubFlag">
+			pubFlag = #pubFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="adminId">
+			adminId = #adminId#
+		</isNotNull>
+	</sql>
+	
+	<select id="query" parameterClass="int" resultClass="kpkpWwwPushNotice">
+		select * from kpkp_push_notice where noticeId=#noticeId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwPushNoticeCond" resultClass="kpkpWwwPushNotice">
+		select * from kpkp_push_notice
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwPushNoticeCond" resultClass="int">
+		select count(*) from kpkp_push_notice
+		<include refid="condition" />
+	</select>
+
+	<insert id="insert" parameterClass="kpkpWwwPushNotice">
+		insert into kpkp_push_notice
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="noticeId">
+			SELECT @@IDENTITY
+			AS noticeId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwPushNotice">
+		update kpkp_push_notice
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where noticeId=#noticeId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwPushNoticeCond">
+		update kpkp_push_notice
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_push_notice where noticeId = #noticeId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwPushNoticeCond">
+		delete from kpkp_push_notice
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwPushNoticeCond"
+		resultClass="kpkpWwwPushNotice" remapResults="true">
+		select $statsParam$ from kpkp_push_notice
+		<include refid="condition" />
+	</select>
+</sqlMap>

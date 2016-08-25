@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwChatPrivateSessMapper">
+	<typeAlias alias="kpkpWwwChatPrivateSess" type="com.lsy.www.entity.model.chat.KpkpWwwChatPrivateSess" />
+	<typeAlias alias="kpkpWwwChatPrivateSessCond" type="com.lsy.www.entity.cond.chat.KpkpWwwChatPrivateSessCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="sessId">
+			    kpkp_chat_private_sess.sessId = #sessId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+			    kpkp_chat_private_sess.userId = #userId#
+			</isNotNull>
+			<isNotNull prepend="and" property="friendId">
+			    kpkp_chat_private_sess.friendId = #friendId#
+			</isNotNull>
+			<isNotNull prepend="and" property="recycleFlag">
+			    kpkp_chat_private_sess.recycleFlag = #recycleFlag#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="userId">
+			userId = #userId#
+		</isNotNull>
+		<isNotNull prepend="," property="friendId">
+			friendId = #friendId#
+		</isNotNull>
+		<isNotNull prepend="," property="unreads">
+			unreads = #unreads#
+		</isNotNull>
+		<isNotNull prepend="," property="lastMsg">
+			lastMsg = #lastMsg#
+		</isNotNull>
+		<isNotNull prepend="," property="lastTime">
+			lastTime = #lastTime#
+		</isNotNull>
+		<isNotNull prepend="," property="firstTime">
+			firstTime = #firstTime#
+		</isNotNull>
+		<isNotNull prepend="," property="recycleFlag">
+			recycleFlag = #recycleFlag#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwChatPrivateSess">
+		select * from kpkp_chat_private_sess where sessId=#sessId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwChatPrivateSessCond" resultClass="kpkpWwwChatPrivateSess">
+		select kpkp_chat_private_sess.*
+		<dynamic prepend="">
+			<isNotNull prepend="," property="userId">
+				kpkp_user_account.avatar as friendAvatar,
+				kpkp_user_account.nickname as friendNickname
+			</isNotNull>
+		</dynamic>
+		from kpkp_chat_private_sess inner join (select sessId from kpkp_chat_private_sess
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_chat_private_sess.sessId desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+		) as kpkp_chat_private_sess_index using(sessId)
+		<dynamic prepend="">
+			<isNotNull property="userId">
+				inner join kpkp_user_account on kpkp_chat_private_sess.friendId = kpkp_user_account.userId
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwChatPrivateSessCond" resultClass="int">
+		select count(*) from kpkp_chat_private_sess
+		<include refid="condition" />
+	</select>
+	
+	<insert id="insert" parameterClass="kpkpWwwChatPrivateSess">
+		insert into kpkp_chat_private_sess
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="sessId">
+			SELECT @@IDENTITY
+			AS sessId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwChatPrivateSess">
+		update kpkp_chat_private_sess
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where sessId=#sessId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwChatPrivateSessCond">
+		update kpkp_chat_private_sess
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_chat_private_sess where sessId = #sessId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwChatPrivateSessCond">
+		delete from kpkp_chat_private_sess
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwChatPrivateSessCond"
+		resultClass="kpkpWwwChatPrivateSess" remapResults="true">
+		select $statsParam$ from kpkp_chat_private_sess
+		<include refid="condition" />
+	</select>
+</sqlMap>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwSysRoleUserMapper">
+	<typeAlias alias="kpkpWwwSysRoleUser" type="com.lsy.www.entity.model.sys.KpkpWwwSysRoleUser" />
+	<typeAlias alias="kpkpWwwSysRoleUserCond" type="com.lsy.www.entity.cond.sys.KpkpWwwSysRoleUserCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+		<isNotNull prepend="and" property="id">
+		    id = #id#
+		</isNotNull>
+		<isNotNull prepend="and" property="roleId">
+		    roleId = #roleId#
+		</isNotNull>
+		<isNotNull prepend="and" property="userId">
+		    userId = #userId#
+		</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="roleId">
+			roleId = #roleId#
+		</isNotNull>
+		<isNotNull prepend="," property="userId">
+			userId = #userId#
+		</isNotNull>
+	</sql>
+	
+	<select id="query" parameterClass="int" resultClass="kpkpWwwSysRoleUser">
+		select * from kpkp_sys_role_user where id=#id#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwSysRoleUserCond" resultClass="kpkpWwwSysRoleUser">
+		select * from kpkp_sys_role_user
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwSysRoleUserCond" resultClass="int">
+		select count(*) from kpkp_sys_role_user
+		<include refid="condition" />
+	</select>
+
+	<insert id="insert" parameterClass="kpkpWwwSysRoleUser">
+		insert into kpkp_sys_role_user
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY
+			AS id
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwSysRoleUser">
+		update kpkp_sys_role_user
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where id=#id#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwSysRoleUserCond">
+		update kpkp_sys_role_user
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_sys_role_user where id = #id#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwSysRoleUserCond">
+		delete from kpkp_sys_role_user
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwSysRoleUserCond"
+		resultClass="kpkpWwwSysRoleUser" remapResults="true">
+		select $statsParam$ from kpkp_sys_role_user
+		<include refid="condition" />
+	</select>
+</sqlMap>

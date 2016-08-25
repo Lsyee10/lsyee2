@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwUserAuthSmsMapper">
+	<typeAlias alias="kpkpWwwUserAuthSms" type="com.lsy.www.entity.model.user.KpkpWwwUserAuthSms" />
+	<typeAlias alias="kpkpWwwUserAuthSmsCond" type="com.lsy.www.entity.cond.user.KpkpWwwUserAuthSmsCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="smsId">
+			    smsId = #smsId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+			    userId = #userId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userIdNeq">
+			    userId != #userIdNeq#
+			</isNotNull>
+			<isNotEmpty prepend="and" property="cellphone">
+			    cellphone = #cellphone#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="authCode">
+			    authCode = #authCode#
+			</isNotEmpty>
+			<isNotNull prepend="and" property="useFlag">
+			    useFlag = #useFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="checkFlag">
+			    checkFlag = #checkFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="receiptFlag">
+			    receiptFlag = #receiptFlag#
+			</isNotNull>
+			<isNotEmpty prepend="and" property="sendTimeSt">
+				 <![CDATA[ sendTime >= #sendTimeSt# ]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="sendTimeEd">
+				 <![CDATA[ sendTime <= #sendTimeEd# ]]>
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="userId">
+			userId = #userId#
+		</isNotNull>
+		<isNotNull prepend="," property="cellphone">
+			cellphone = #cellphone#
+		</isNotNull>
+		<isNotNull prepend="," property="content">
+			content = #content#
+		</isNotNull>
+		<isNotNull prepend="," property="reqNum">
+			reqNum = #reqNum#
+		</isNotNull>
+		<isNotNull prepend="," property="seqNum">
+			seqNum = #seqNum#
+		</isNotNull>
+		<isNotNull prepend="," property="authCode">
+			authCode = #authCode#
+		</isNotNull>
+		<isNotNull prepend="," property="words">
+			words = #words#
+		</isNotNull>
+		<isNotNull prepend="," property="branches">
+			branches = #branches#
+		</isNotNull>
+		<isNotNull prepend="," property="sign">
+			sign = #sign#
+		</isNotNull>
+		<isNotNull prepend="," property="useFlag">
+			useFlag = #useFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="checkFlag">
+			checkFlag = #checkFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="receiptFlag">
+			receiptFlag = #receiptFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="receiptTime">
+			receiptTime = #receiptTime#
+		</isNotNull>
+		<isNotNull prepend="," property="sendTime">
+			sendTime = #sendTime#
+		</isNotNull>
+		<isNotNull prepend="," property="checkTimes">
+			checkTimes = #checkTimes#
+		</isNotNull>
+	</sql>
+	
+	<select id="query" parameterClass="int" resultClass="kpkpWwwUserAuthSms">
+		select * from kpkp_user_auth_sms where smsId=#smsId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwUserAuthSmsCond" resultClass="kpkpWwwUserAuthSms">
+		select * from kpkp_user_auth_sms inner join (select smsId from kpkp_user_auth_sms
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_user_auth_sms.smsId desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+		) as kpkp_user_auth_sms_index using (smsId)
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwUserAuthSmsCond" resultClass="int">
+		select count(*) from kpkp_user_auth_sms
+		<include refid="condition" />
+	</select>
+
+	<insert id="insert" parameterClass="kpkpWwwUserAuthSms">
+		insert into kpkp_user_auth_sms
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="smsId">
+			SELECT @@IDENTITY
+			AS smsId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwUserAuthSms">
+		update kpkp_user_auth_sms
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where smsId=#smsId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwUserAuthSmsCond">
+		update kpkp_user_auth_sms
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_user_auth_sms where smsId=#smsId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwUserAuthSmsCond">
+		delete from kpkp_user_auth_sms
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwUserAuthSmsCond"
+		resultClass="kpkpWwwUserAuthSms" remapResults="true">
+		select $statsParam$ from kpkp_user_auth_sms
+		<include refid="condition" />
+	</select>
+</sqlMap>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwSysPurviewMapper">
+	<typeAlias alias="kpkpWwwSysPurview" type="com.lsy.www.entity.model.sys.KpkpWwwSysPurview" />
+	<typeAlias alias="kpkpWwwSysPurviewCond" type="com.lsy.www.entity.cond.sys.KpkpWwwSysPurviewCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+		<isNotNull prepend="and" property="purviewId">
+		    purviewId = #purviewId#
+		</isNotNull>
+		<isNotEmpty prepend="and" property="code">
+		    code = #code#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="parent">
+		    parent = #parent#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="level">
+		    level = #level#
+		</isNotNull>
+		<isNotEmpty prepend="and" property="handle">
+		    handle = #handle#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="recycleFlag">
+		    recycleFlag = #recycleFlag#
+		</isNotNull>
+		<isNotNull prepend="and" property="adminId">
+		    adminId = #adminId#
+		</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="code">
+			code = #code#
+		</isNotNull>
+		<isNotNull prepend="," property="parent">
+			parent = #parent#
+		</isNotNull>
+		<isNotNull prepend="," property="level">
+			level = #level#
+		</isNotNull>
+		<isNotNull prepend="," property="sn">
+			sn = #sn#
+		</isNotNull>
+		<isNotNull prepend="," property="name">
+			name = #name#
+		</isNotNull>
+		<isNotNull prepend="," property="handle">
+			handle = #handle#
+		</isNotNull>
+		<isNotNull prepend="," property="access">
+			access = #access#
+		</isNotNull>
+		<isNotNull prepend="," property="func">
+			func = #func#
+		</isNotNull>
+		<isNotNull prepend="," property="css">
+			css = #css#
+		</isNotNull>
+		<isNotNull prepend="," property="remark">
+			remark = #remark#
+		</isNotNull>
+		<isNotNull prepend="," property="recycleFlag">
+			recycleFlag = #recycleFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+		<isNotNull prepend="," property="adminId">
+			adminId = #adminId#
+		</isNotNull>
+	</sql>
+	
+	<select id="query" parameterClass="int" resultClass="kpkpWwwSysPurview">
+		select * from kpkp_sys_purview where purviewId=#purviewId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwSysPurviewCond" resultClass="kpkpWwwSysPurview">
+		select * from kpkp_sys_purview
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwSysPurviewCond" resultClass="int">
+		select count(*) from kpkp_sys_purview
+		<include refid="condition" />
+	</select>
+
+	<insert id="insert" parameterClass="kpkpWwwSysPurview">
+		insert into kpkp_sys_purview
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="purviewId">
+			SELECT @@IDENTITY
+			AS purviewId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwSysPurview">
+		update kpkp_sys_purview
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where purviewId=#purviewId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwSysPurviewCond">
+		update kpkp_sys_purview
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_sys_purview where purviewId = #purviewId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwSysPurviewCond">
+		delete from kpkp_sys_purview
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwSysPurviewCond"
+		resultClass="kpkpWwwSysPurview" remapResults="true">
+		select $statsParam$ from kpkp_sys_purview
+		<include refid="condition" />
+	</select>
+</sqlMap>

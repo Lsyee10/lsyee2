@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwSysRoleMapper">
+	<typeAlias alias="kpkpWwwSysRole" type="com.lsy.www.entity.model.sys.KpkpWwwSysRole" />
+	<typeAlias alias="kpkpWwwSysRoleCond" type="com.lsy.www.entity.cond.sys.KpkpWwwSysRoleCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+		<isNotNull prepend="and" property="roleId">
+		    roleId = #roleId#
+		</isNotNull>
+		<isNotNull prepend="and" property="adminId">
+		    adminId = #adminId#
+		</isNotNull>
+		<isNotEmpty prepend="and" property="name">
+		    name = #name#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="recycleFlag">
+		    recycleFlag = #recycleFlag#
+		</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="adminId">
+			adminId = #adminId#
+		</isNotNull>
+		<isNotNull prepend="," property="sn">
+			sn = #sn#
+		</isNotNull>
+		<isNotNull prepend="," property="name">
+			name = #name#
+		</isNotNull>
+		<isNotNull prepend="," property="remark">
+			remark = #remark#
+		</isNotNull>
+		<isNotNull prepend="," property="recycleFlag">
+			recycleFlag = #recycleFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+	</sql>
+	
+	<select id="query" parameterClass="int" resultClass="kpkpWwwSysRole">
+		select * from kpkp_sys_role where roleId=#roleId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwSysRoleCond" resultClass="kpkpWwwSysRole">
+		select * from kpkp_sys_role
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwSysRoleCond" resultClass="int">
+		select count(*) from kpkp_sys_role
+		<include refid="condition" />
+	</select>
+
+	<insert id="insert" parameterClass="kpkpWwwSysRole">
+		insert into kpkp_sys_role
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="roleId">
+			SELECT @@IDENTITY
+			AS roleId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwSysRole">
+		update kpkp_sys_role
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where roleId=#roleId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwSysRoleCond">
+		update kpkp_sys_role
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_sys_role where roleId = #roleId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwSysRoleCond">
+		delete from kpkp_sys_role
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwSysRoleCond"
+		resultClass="kpkpWwwSysRole" remapResults="true">
+		select $statsParam$ from kpkp_sys_role
+		<include refid="condition" />
+	</select>
+</sqlMap>

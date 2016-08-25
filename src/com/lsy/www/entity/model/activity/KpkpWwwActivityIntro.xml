@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwActivityIntroMapper">
+	<typeAlias alias="kpkpWwwActivityIntro" type="com.lsy.www.entity.model.activity.KpkpWwwActivityIntro" />
+	<typeAlias alias="kpkpWwwActivityIntroCond" type="com.lsy.www.entity.cond.activity.KpkpWwwActivityIntroCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="introId">
+			    introId = #introId#
+			</isNotNull>
+			<isNotNull prepend="and" property="activityId">
+			    activityId = #activityId#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="activityId">
+			activityId = #activityId#
+		</isNotNull>
+		<isNotNull prepend="," property="content">
+			content = #content#
+		</isNotNull>
+		<isNotNull prepend="," property="title">
+			title = #title#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwActivityIntro">
+		select * from kpkp_activity_intro where introId=#introId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwActivityIntroCond" resultClass="kpkpWwwActivityIntro">
+		select * from kpkp_activity_intro
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwActivityIntroCond" resultClass="int">
+		select count(*) from kpkp_activity_intro
+		<include refid="condition" />
+	</select>
+	
+	<insert id="insert" parameterClass="kpkpWwwActivityIntro">
+		insert into kpkp_activity_intro
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="introId">
+			SELECT @@IDENTITY
+			AS introId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwActivityIntro">
+		update kpkp_activity_intro
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where introId=#introId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwActivityIntroCond">
+		update kpkp_activity_intro
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_activity_intro where introId = #introId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwActivityIntroCond">
+		delete from kpkp_activity_intro
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwActivityIntroCond"
+		resultClass="kpkpWwwActivityIntro" remapResults="true">
+		select $statsParam$ from kpkp_activity_intro
+		<include refid="condition" />
+	</select>
+</sqlMap>

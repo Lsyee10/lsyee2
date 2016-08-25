@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<package name="sys_return" extends="lsy" namespace="/sys/return">
+		<action name="error" class="lsyWwwSysReturnAction" method="result">
+			<result name="success">/jsp/www/sys/return/error.jsp</result>
+		</action>
+
+		<action name="jump" class="lsyWwwSysReturnAction" method="result">
+			<result name="success">/jsp/www/sys/return/jump.jsp</result>
+		</action>
+		
+		<action name="success" class="lsyWwwSysReturnAction" method="result">
+			<result name="success">/jsp/www/sys/return/success.jsp</result>
+		</action>
+	</package>
+</struts>

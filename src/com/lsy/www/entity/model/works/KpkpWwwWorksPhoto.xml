@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwWorksPhotoMapper">
+	<typeAlias alias="kpkpWwwWorksPhoto" type="com.lsy.www.entity.model.works.KpkpWwwWorksPhoto" />
+	<typeAlias alias="kpkpWwwWorksPhotoCond" type="com.lsy.www.entity.cond.works.KpkpWwwWorksPhotoCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="photoId">
+				kpkp_works_photo.photoId = #photoId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+				kpkp_works_photo.userId = #userId#
+			</isNotNull>
+			<isNotNull prepend="and" property="topicId">
+				kpkp_works_photo.topicId = #topicId#
+			</isNotNull>
+			<isNotNull prepend="and" property="taskId">
+				kpkp_works_photo.taskId = #taskId#
+			</isNotNull>
+			<isNotNull prepend="and" property="stationId">
+				kpkp_works_photo.stationId = #stationId#
+			</isNotNull>
+			<isNotEmpty prepend="and" property="country">
+				kpkp_works_photo.country = #country#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="province">
+				kpkp_works_photo.province = #province#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="city">
+				kpkp_works_photo.city = #city#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="location">
+				kpkp_works_photo.location = #location#
+			</isNotEmpty>
+			<isNotNull prepend="and" property="rightBotPointLat">
+				<![CDATA[ kpkp_works_photo.latitude > #rightBotPointLat# ]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="leftTopPointLat">
+				<![CDATA[ kpkp_works_photo.latitude < #leftTopPointLat# ]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="leftTopPointLng">
+				<![CDATA[ kpkp_works_photo.longitude > #leftTopPointLng# ]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="rightBotPointLng">
+				<![CDATA[ kpkp_works_photo.longitude < #rightBotPointLng# ]]>
+			</isNotNull>
+			<isNotEmpty prepend="and" property="location">
+				kpkp_works_photo.location = #location#
+			</isNotEmpty>
+			<isNotNull prepend="and" property="topFlag">
+				kpkp_works_photo.topFlag = #topFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="starFlag">
+				kpkp_works_photo.starFlag = #starFlag#
+			</isNotNull>
+			<isNotEmpty prepend="and" property="starDateEd">
+				<![CDATA[ kpkp_works_photo.starDate <= #starDateEd# ]]>
+			</isNotEmpty>
+			<isNotNull prepend="and" property="coverFlag">
+				kpkp_works_photo.coverFlag = #coverFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="choiceFlag">
+				kpkp_works_photo.choiceFlag = #choiceFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="awardFlag">
+				kpkp_works_photo.awardFlag = #awardFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="recycleFlag">
+				kpkp_works_photo.recycleFlag = #recycleFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="photoIdGt">
+				<![CDATA[ kpkp_works_photo.photoId > #photoIdGt# ]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="photoIdLte">
+				<![CDATA[ kpkp_works_photo.photoId <= #photoIdLte# ]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="choiceTimeSt">
+				<![CDATA[ kpkp_works_photo.choiceTime > #choiceTimeSt# ]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="choiceTimeEd">
+				<![CDATA[ kpkp_works_photo.choiceTime <= #choiceTimeEd# ]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="addTimeSt">
+				<![CDATA[ kpkp_works_photo.addTime > #addTimeSt# ]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="addTimeEd">
+				<![CDATA[ kpkp_works_photo.addTime <= #addTimeEd# ]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="praiseUserId">
+				kpkp_works_praise.userId = #praiseUserId#
+			</isNotNull>
+			<isNotNull prepend="and" property="focusUserId">
+				kpkp_user_focus.userId = #focusUserId#
+			</isNotNull>
+			<isNotEmpty prepend="and" property="editAddTimeSt">
+				<![CDATA[ kpkp_works_photo_edit.addTime >= #editAddTimeSt# ]]>
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="tagId">
+				kpkp_works_photo_tag.tagId = #tagId#
+			</isNotEmpty>
+			<isNotNull prepend="and" property="voteTurnId">
+				kpkp_activity_vote_option.turnId = #voteTurnId#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="userId">
+			userId = #userId#
+		</isNotNull>
+		<isNotNull prepend="," property="topicId">
+			topicId = #topicId#
+		</isNotNull>
+		<isNotNull prepend="," property="taskId">
+			taskId = #taskId#
+		</isNotNull>
+		<isNotNull prepend="," property="stationId">
+			stationId = #stationId#
+		</isNotNull>
+		<isNotNull prepend="," property="sn">
+			sn = #sn#
+		</isNotNull>
+		<isNotNull prepend="," property="intro">
+			intro = #intro#
+		</isNotNull>
+		<isNotNull prepend="," property="img1">
+			img1 = #img1#
+		</isNotNull>
+		<isNotNull prepend="," property="img2">
+			img2 = #img2#
+		</isNotNull>
+		<isNotNull prepend="," property="img3">
+			img3 = #img3#
+		</isNotNull>
+		<isNotNull prepend="," property="img4">
+			img4 = #img4#
+		</isNotNull>
+		<isNotNull prepend="," property="views">
+			views = #views#
+		</isNotNull>
+		<isNotNull prepend="," property="praises">
+			praises = #praises#
+		</isNotNull>
+		<isNotNull prepend="," property="comments">
+			comments = #comments#
+		</isNotNull>
+		<isNotNull prepend="," property="country">
+			country = #country#
+		</isNotNull>
+		<isNotNull prepend="," property="province">
+			province = #province#
+		</isNotNull>
+		<isNotNull prepend="," property="city">
+			city = #city#
+		</isNotNull>
+		<isNotNull prepend="," property="location">
+			location = #location#
+		</isNotNull>
+		<isNotNull prepend="," property="latitude">
+			latitude = #latitude#
+		</isNotNull>
+		<isNotNull prepend="," property="longitude">
+			longitude = #longitude#
+		</isNotNull>
+		<isNotNull prepend="," property="effect">
+			effect = #effect#
+		</isNotNull>
+		<isNotNull prepend="," property="starFlag">
+			starFlag = #starFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="starTime">
+			starTime = #starTime#
+		</isNotNull>
+		<isNotNull prepend="," property="starDate">
+			starDate = #starDate#
+		</isNotNull>
+		<isNotNull prepend="," property="starIntro">
+			starIntro = #starIntro#
+		</isNotNull>
+		<isNotNull prepend="," property="choiceFlag">
+			choiceFlag = #choiceFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="choiceTime">
+			choiceTime = #choiceTime#
+		</isNotNull>
+		<isNotNull prepend="," property="awardFlag">
+			awardFlag = #awardFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="awardTime">
+			awardTime = #awardTime#
+		</isNotNull>
+		<isNotNull prepend="," property="awardPrize">
+			awardPrize = #awardPrize#
+		</isNotNull>
+		<isNotNull prepend="," property="topFlag">
+			topFlag = #topFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="topTime">
+			topTime = #topTime#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+		<isNotNull prepend="," property="coverFlag">
+			coverFlag = #coverFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="recycleFlag">
+			recycleFlag = #recycleFlag#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwWorksPhoto">
+		select * from kpkp_works_photo where photoId = #photoId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwWorksPhotoCond" resultClass="kpkpWwwWorksPhoto" remapResults="true">
+		select kpkp_works_photo.*
+		<dynamic prepend="">
+			<isNotNull prepend="," property="profileFlag">
+				kpkp_user_account.avatar as avatar,
+				kpkp_user_account.nickname as nickname
+			</isNotNull>
+			<isNotNull prepend="," property="voteTurnId">
+				kpkp_activity_vote_option.polls as votePolls
+			</isNotNull>
+		</dynamic>
+		from kpkp_works_photo
+		<dynamic prepend="">
+			<isNotNull property="praiseUserId">
+				inner join kpkp_works_praise on kpkp_works_photo.photoId = kpkp_works_praise.photoId
+			</isNotNull>
+			<isNotNull property="tagId">
+				inner join kpkp_works_photo_tag on kpkp_works_photo.photoId = kpkp_works_photo_tag.photoId
+			</isNotNull>
+			<isNotNull property="focusUserId">
+				inner join kpkp_user_focus on kpkp_works_photo.userId = kpkp_user_focus.shooterId
+			</isNotNull>
+			<isNotNull property="editAddTimeSt">
+				inner join kpkp_works_photo_edit on kpkp_works_photo.photoId = kpkp_works_photo_edit.photoId
+			</isNotNull>
+			<isNotNull property="profileFlag">
+				inner join kpkp_user_account on kpkp_works_photo.userId = kpkp_user_account.userId
+			</isNotNull>
+			<isNotNull property="voteTurnId">
+				inner join kpkp_activity_vote_option on kpkp_works_photo.photoId = kpkp_activity_vote_option.photoId
+			</isNotNull>
+		</dynamic>
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_works_photo.photoId desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwWorksPhotoCond" resultClass="int">
+		select count(*) from kpkp_works_photo
+		<dynamic prepend="">
+			<isNotNull property="praiseUserId">
+				inner join kpkp_works_praise on kpkp_works_photo.photoId = kpkp_works_praise.photoId
+			</isNotNull>
+		</dynamic>
+		<include refid="condition" />
+	</select>
+
+	<insert id="insert" parameterClass="kpkpWwwWorksPhoto">
+		insert into kpkp_works_photo
+		<dynamic prepend="set">
+			<include refid="field" />
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="photoId">
+			SELECT @@IDENTITY
+			AS photoId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwWorksPhoto">
+		update kpkp_works_photo
+		<dynamic prepend="set">
+			<include refid="field" />
+		</dynamic>
+		where photoId=#photoId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwWorksPhotoCond">
+		update kpkp_works_photo
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_works_photo where photoId = #photoId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwWorksPhotoCond">
+		delete from kpkp_works_photo
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwWorksPhotoCond" resultClass="kpkpWwwWorksPhoto" remapResults="true">
+		select $statsParam$ from kpkp_works_photo
+		<include refid="condition" />
+	</select>
+</sqlMap>

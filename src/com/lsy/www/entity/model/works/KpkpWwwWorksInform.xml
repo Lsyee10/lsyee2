@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwWorksInformMapper">
+	<typeAlias alias="kpkpWwwWorksInform" type="com.lsy.www.entity.model.works.KpkpWwwWorksInform" />
+	<typeAlias alias="kpkpWwwWorksInformCond" type="com.lsy.www.entity.cond.works.KpkpWwwWorksInformCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="informId">
+			    informId = #informId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+			    userId = #userId#
+			</isNotNull>
+			<isNotNull prepend="and" property="topicId">
+			    topicId = #topicId#
+			</isNotNull>
+			<isNotNull prepend="and" property="photoId">
+			    photoId = #photoId#
+			</isNotNull>
+			<isNotNull prepend="and" property="authorId">
+			    authorId = #authorId#
+			</isNotNull>
+			<isNotNull prepend="and" property="dealFlag">
+			    dealFlag = #dealFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="recycleFlag">
+			    recycleFlag = #recycleFlag#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="userId">
+			userId = #userId#
+		</isNotNull>
+		<isNotNull prepend="," property="topicId">
+			topicId = #topicId#
+		</isNotNull>
+		<isNotNull prepend="," property="photoId">
+			photoId = #photoId#
+		</isNotNull>
+		<isNotNull prepend="," property="authorId">
+			authorId = #authorId#
+		</isNotNull>
+		<isNotEmpty prepend="," property="reason">
+			reason = #reason#
+		</isNotEmpty>
+		<isNotNull prepend="," property="dealFlag">
+			dealFlag = #dealFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="recycleFlag">
+			recycleFlag = #recycleFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+		<isNotNull prepend="," property="dealTime">
+			dealTime = #dealTime#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwWorksInform">
+		select * from kpkp_works_inform where informId = #informId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwWorksInformCond" resultClass="kpkpWwwWorksInform">
+		select * from kpkp_works_inform
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwWorksInformCond" resultClass="int">
+		select count(*) from kpkp_works_inform
+		<include refid="condition" />
+	</select>
+	
+	<insert id="insert" parameterClass="kpkpWwwWorksInform">
+		insert into kpkp_works_inform
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="informId">
+			SELECT @@IDENTITY
+			AS informId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwWorksInform">
+		update kpkp_works_inform
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where informId=#informId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwWorksInformCond">
+		update kpkp_works_inform
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_works_inform where informId = #informId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwWorksInformCond">
+		delete from kpkp_works_inform
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwWorksInformCond"
+		resultClass="kpkpWwwWorksInform" remapResults="true">
+		select $statsParam$ from kpkp_works_inform
+		<include refid="condition" />
+	</select>
+</sqlMap>

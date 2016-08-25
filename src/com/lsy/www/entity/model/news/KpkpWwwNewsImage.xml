@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwNewsImageMapper">
+	<typeAlias alias="kpkpWwwNewsImage" type="com.lsy.www.entity.model.news.KpkpWwwNewsImage" />
+	<typeAlias alias="kpkpWwwNewsImageCond" type="com.lsy.www.entity.cond.news.KpkpWwwNewsImageCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="imageId">
+			    imageId = #imageId#
+			</isNotNull>
+			<isNotNull prepend="and" property="newsId">
+			    newsId = #newsId#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="newsId">
+			newsId = #newsId#
+		</isNotNull>
+		<isNotNull prepend="," property="path">
+			path = #path#
+		</isNotNull>
+		<isNotNull prepend="," property="des">
+			des = #des#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwNewsImage">
+		select * from kpkp_news_image where imageId=#imageId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwNewsImageCond"
+		resultClass="kpkpWwwNewsImage">
+		select * from kpkp_news_image
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwNewsImageCond" resultClass="int">
+		select count(*) from kpkp_news_image
+		<include refid="condition" />
+	</select>
+	
+	<insert id="insert" parameterClass="kpkpWwwNewsImage">
+		insert into kpkp_news_image
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="imageId">
+			SELECT @@IDENTITY
+			AS imageId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwNewsImage">
+		update kpkp_news_image
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where imageId=#imageId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwNewsImageCond">
+		update kpkp_news_image
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_news_image where imageId = #imageId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwNewsImageCond">
+		delete from kpkp_news_image
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwNewsImageCond"
+		resultClass="kpkpWwwNewsImage" remapResults="true">
+		select $statsParam$ from kpkp_news_image
+		<include refid="condition" />
+	</select>
+</sqlMap>

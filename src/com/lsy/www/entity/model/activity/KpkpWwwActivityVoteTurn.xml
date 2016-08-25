@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwActivityVoteTurnMapper">
+	<typeAlias alias="kpkpWwwActivityVoteTurn" type="com.lsy.www.entity.model.activity.KpkpWwwActivityVoteTurn" />
+	<typeAlias alias="kpkpWwwActivityVoteTurnCond" type="com.lsy.www.entity.cond.activity.KpkpWwwActivityVoteTurnCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="turnId">
+			    kpkp_activity_vote_turn.turnId = #turnId#
+			</isNotNull>
+			<isNotNull prepend="and" property="activityId">
+			    kpkp_activity_vote_turn.activityId = #activityId#
+			</isNotNull>
+			<isNotNull prepend="and" property="stateFlag">
+			    kpkp_activity_vote_turn.stateFlag = #stateFlag#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="sn">
+			sn = #sn#
+		</isNotNull>
+		<isNotNull prepend="," property="name">
+			name = #name#
+		</isNotNull>
+		<isNotNull prepend="," property="activityId">
+			activityId = #activityId#
+		</isNotNull>
+		<isNotNull prepend="," property="stateFlag">
+			stateFlag = #stateFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="allows">
+			allows = #allows#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwActivityVoteTurn">
+		select * from kpkp_activity_vote_turn where turnId=#turnId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwActivityVoteTurnCond" resultClass="kpkpWwwActivityVoteTurn">
+		select * from kpkp_activity_vote_turn
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+	
+	<select id="countByCond" parameterClass="kpkpWwwActivityVoteTurnCond" resultClass="int">
+		select count(*) from kpkp_activity_vote_turn
+		<include refid="condition" />
+	</select>
+	
+	<insert id="insert" parameterClass="kpkpWwwActivityVoteTurn">
+		insert into kpkp_activity_vote_turn
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="turnId">
+			SELECT @@IDENTITY
+			AS turnId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwActivityVoteTurn">
+		update kpkp_activity_vote_turn
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where turnId=#turnId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwActivityVoteTurnCond">
+		update kpkp_activity_vote_turn
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_activity_vote_turn where turnId = #turnId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwActivityVoteTurnCond">
+		delete from kpkp_activity_vote_turn
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwActivityVoteTurnCond"
+		resultClass="kpkpWwwActivityVoteTurn" remapResults="true">
+		select $statsParam$ from kpkp_activity_vote_turn
+		<include refid="condition" />
+	</select>
+</sqlMap>

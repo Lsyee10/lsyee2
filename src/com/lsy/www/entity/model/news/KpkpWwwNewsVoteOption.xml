@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwNewsVoteOptionMapper">
+	<typeAlias alias="kpkpWwwNewsVoteOption" type="com.lsy.www.entity.model.news.KpkpWwwNewsVoteOption" />
+	<typeAlias alias="kpkpWwwNewsVoteOptionCond" type="com.lsy.www.entity.cond.news.KpkpWwwNewsVoteOptionCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="optionId">
+			    optionId = #optionId#
+			</isNotNull>
+			<isNotNull prepend="and" property="newsId">
+			    newsId = #newsId#
+			</isNotNull>
+			<isNotNull prepend="and" property="voteId">
+			    voteId = #voteId#
+			</isNotNull>
+			<isNotNull prepend="and" property="recycleFlag">
+			    recycleFlag = #recycleFlag#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="newsId">
+			newsId = #newsId#
+		</isNotNull>
+		<isNotNull prepend="," property="voteId">
+			voteId = #voteId#
+		</isNotNull>
+		<isNotNull prepend="," property="sn">
+			sn = #sn#
+		</isNotNull>
+		<isNotNull prepend="," property="name">
+			name = #name#
+		</isNotNull>
+		<isNotNull prepend="," property="polls">
+			polls = #polls#
+		</isNotNull>
+		<isNotNull prepend="," property="recycleFlag">
+			recycleFlag = #recycleFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwNewsVoteOption">
+		select * from kpkp_news_vote_option where optionId= #optionId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwNewsVoteOptionCond"
+		resultClass="kpkpWwwNewsVoteOption">
+		select * from kpkp_news_vote_option
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwNewsVoteOptionCond" resultClass="int">
+		select count(*) from kpkp_news_vote_option
+		<include refid="condition" />
+	</select>
+	
+	<insert id="insert" parameterClass="kpkpWwwNewsVoteOption">
+		insert into kpkp_news_vote_option
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="optionId">
+			SELECT @@IDENTITY
+			AS optionId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwNewsVoteOption">
+		update kpkp_news_vote_option
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where optionId=#optionId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwNewsVoteOptionCond">
+		update kpkp_news_vote_option
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from
+		kpkp_news_vote_option where optionId = #optionId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwNewsVoteOptionCond">
+		delete from kpkp_news_vote_option
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwNewsVoteOptionCond"
+		resultClass="kpkpWwwNewsVoteOption" remapResults="true">
+		select $statsParam$ from kpkp_news_vote_option
+		<include refid="condition" />
+	</select>
+</sqlMap>

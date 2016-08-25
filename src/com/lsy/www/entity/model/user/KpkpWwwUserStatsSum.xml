@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwUserStatsSumMapper">
+	<typeAlias alias="kpkpWwwUserStatsSum" type="com.lsy.www.entity.model.user.KpkpWwwUserStatsSum" />
+	<typeAlias alias="kpkpWwwUserStatsSumCond" type="com.lsy.www.entity.cond.user.KpkpWwwUserStatsSumCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="userId">
+			    userId = #userId#
+			</isNotNull>
+			<isNotNull prepend="and" property="profileFlag">
+			    stars != 0 
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="photos">
+		    photos = #photos#
+		</isNotNull>
+		<isNotNull prepend="," property="tasks">
+		    tasks = #tasks#
+		</isNotNull>
+		<isNotNull prepend="," property="stations">
+		    stations = #stations#
+		</isNotNull>
+		<isNotNull prepend="," property="logins">
+		    logins = #logins#
+		</isNotNull>
+		<isNotNull prepend="," property="comments">
+		    comments = #comments#
+		</isNotNull>
+		<isNotNull prepend="," property="praises">
+		    praises = #praises#
+		</isNotNull>
+		<isNotNull prepend="," property="views">
+		    views = #views#
+		</isNotNull>
+		<isNotNull prepend="," property="topics">
+		    topics = #topics#
+		</isNotNull>
+		<isNotNull prepend="," property="stars">
+		    stars = #stars#
+		</isNotNull>
+		<isNotNull prepend="," property="choices">
+		    choices = #choices#
+		</isNotNull>
+		<isNotNull prepend="," property="awards">
+		    awards = #awards#
+		</isNotNull>
+		<isNotNull prepend="," property="trades">
+		    trades = #trades#
+		</isNotNull>
+		<isNotNull prepend="," property="tags">
+		    tags = #tags#
+		</isNotNull>
+		<isNotNull prepend="," property="fans">
+		    fans = #fans#
+		</isNotNull>
+		<isNotNull prepend="," property="focus">
+		    focus = #focus#
+		</isNotNull>
+		<isNotNull prepend="," property="applies">
+		    applies = #applies#
+		</isNotNull>
+		<isNotNull prepend="," property="points">
+		    points = #points#
+		</isNotNull>
+		<isNotNull prepend="," property="notices">
+		    notices = #notices#
+		</isNotNull>
+		<isNotNull prepend="," property="events">
+		    events = #events#
+		</isNotNull>
+		<isNotNull prepend="," property="newses">
+		    newses = #newses#
+		</isNotNull>
+		<isNotNull prepend="," property="groups">
+		    groups = #groups#
+		</isNotNull>
+		<isNotNull prepend="," property="msgs">
+		    msgs = #msgs#
+		</isNotNull>
+		<isNotNull prepend="," property="privates">
+		    privates = #privates#
+		</isNotNull>
+	</sql>
+	
+	<select id="query" parameterClass="int" resultClass="kpkpWwwUserStatsSum">
+		select * from kpkp_user_stats_sum where userId=#userId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwUserStatsSumCond" resultClass="kpkpWwwUserStatsSum">
+		select kpkp_user_stats_sum.* 
+		<dynamic prepend="">
+			<isNotNull prepend="," property="profileFlag">
+				kpkp_user_account.avatar as avatar,
+				kpkp_user_account.nickname as nickname,
+				kpkp_user_account.intro as intro
+			</isNotNull>
+		</dynamic>
+		from kpkp_user_stats_sum
+		<dynamic prepend="">
+			<isNotNull property="profileFlag">
+				inner join kpkp_user_account on kpkp_user_stats_sum.userId = kpkp_user_account.userId
+			</isNotNull>
+		</dynamic>
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwUserStatsSumCond" resultClass="int">
+		select count(*) from kpkp_user_stats_sum
+		<include refid="condition" />
+	</select>
+
+	<insert id="insert" parameterClass="kpkpWwwUserStatsSum">
+		insert into kpkp_user_stats_sum
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="userId">
+			    userId = #userId#
+			</isNotNull>
+			<include refid="field"/>
+		</dynamic>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwUserStatsSum">
+		update kpkp_user_stats_sum
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where userId=#userId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwUserStatsSumCond">
+		update kpkp_user_stats_sum
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_user_stats_sum where userId=#userId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwUserStatsSumCond">
+		delete from kpkp_user_stats_sum
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwUserStatsSumCond"
+		resultClass="kpkpWwwUserStatsSum" remapResults="true">
+		select $statsParam$ from kpkp_user_stats_sum
+		<include refid="condition" />
+	</select>
+</sqlMap>

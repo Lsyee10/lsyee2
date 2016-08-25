@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwActivityVotePollMapper">
+	<typeAlias alias="kpkpWwwActivityVotePoll" type="com.lsy.www.entity.model.activity.KpkpWwwActivityVotePoll" />
+	<typeAlias alias="kpkpWwwActivityVotePollCond" type="com.lsy.www.entity.cond.activity.KpkpWwwActivityVotePollCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="pollId">
+			    pollId = #pollId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+			    userId = #userId#
+			</isNotNull>
+			<isNotNull prepend="and" property="activityId">
+			    activityId = #activityId#
+			</isNotNull>
+			<isNotNull prepend="and" property="turnId">
+			    turnId = #turnId#
+			</isNotNull>
+			<isNotNull prepend="and" property="photoId">
+			    photoId = #photoId#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="userId">
+			userId = #userId#
+		</isNotNull>
+		<isNotNull prepend="," property="activityId">
+			activityId = #activityId#
+		</isNotNull>
+		<isNotNull prepend="," property="turnId">
+			turnId = #turnId#
+		</isNotNull>
+		<isNotNull prepend="," property="photoId">
+			photoId = #photoId#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwActivityVotePoll">
+		select *
+		from kpkp_activity_vote_poll where pollId=#pollId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwActivityVotePollCond" resultClass="kpkpWwwActivityVotePoll">
+		select * from kpkp_activity_vote_poll
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwActivityVotePollCond" resultClass="int">
+		select count(*) from kpkp_activity_vote_poll
+		<include refid="condition" />
+	</select>
+	
+	<insert id="insert" parameterClass="kpkpWwwActivityVotePoll">
+		insert into kpkp_activity_vote_poll
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="pollId">
+			SELECT @@IDENTITY
+			AS pollId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwActivityVotePoll">
+		update kpkp_activity_vote_poll
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where pollId=#pollId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwActivityVotePollCond">
+		update kpkp_activity_vote_poll
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_activity_vote_poll where pollId = #pollId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwActivityVotePollCond">
+		delete from kpkp_activity_vote_poll
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwActivityVotePollCond"
+		resultClass="kpkpWwwActivityVotePoll" remapResults="true">
+		select $statsParam$ from kpkp_activity_vote_poll
+		<include refid="condition" />
+	</select>
+</sqlMap>

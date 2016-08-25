@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwWorksPraiseMapper">
+	<typeAlias alias="kpkpWwwWorksPraise" type="com.lsy.www.entity.model.works.KpkpWwwWorksPraise" />
+	<typeAlias alias="kpkpWwwWorksPraiseCond" type="com.lsy.www.entity.cond.works.KpkpWwwWorksPraiseCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="praiseId">
+				kpkp_works_praise.praiseId = #praiseId#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+				kpkp_works_praise.userId = #userId#
+			</isNotNull>
+			<isNotNull prepend="and" property="topicId">
+				kpkp_works_praise.topicId = #topicId#
+			</isNotNull>
+			<isNotNull prepend="and" property="photoId">
+				kpkp_works_praise.photoId = #photoId#
+			</isNotNull>
+			<isNotNull prepend="and" property="authorId">
+				kpkp_works_praise.authorId = #authorId#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<sql id="field">
+		<isNotNull prepend="," property="userId">
+			userId = #userId#
+		</isNotNull>
+		<isNotNull prepend="," property="topicId">
+			topicId = #topicId#
+		</isNotNull>
+		<isNotNull prepend="," property="photoId">
+			photoId = #photoId#
+		</isNotNull>
+		<isNotNull prepend="," property="authorId">
+			authorId = #authorId#
+		</isNotNull>
+		<isNotNull prepend="," property="thumb">
+			thumb = #thumb#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+	</sql>
+
+	<select id="query" parameterClass="int" resultClass="kpkpWwwWorksPraise">
+		select * from kpkp_works_praise where praiseId=#praiseId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwWorksPraiseCond" resultClass="kpkpWwwWorksPraise">
+		select kpkp_works_praise.* 
+		
+		from kpkp_works_praise inner join (select kpkp_works_praise.praiseId from kpkp_works_praise
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_works_praise.praiseId desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	  ) as kpkp_works_praise_index using(praiseId)
+	  <isNotNull property="userId">
+			inner join kpkp_user_account on kpkp_works_praise.authorId = kpkp_user_account.userId
+		</isNotNull>
+		<isNotNull property="authorId">
+			inner join kpkp_user_account on kpkp_works_praise.userId = kpkp_user_account.userId
+		</isNotNull>
+	</select>
+	
+	<select id="queryByJoin" parameterClass="kpkpWwwWorksPraiseCond" resultClass="kpkpWwwWorksPraise">
+		select kpkp_works_praise.*,kpkp_user_account.nickname, kpkp_user_account.avatar from kpkp_works_praise
+		 inner join (select kpkp_works_praise.praiseId from kpkp_works_praise
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isEmpty property="orderParam">
+				kpkp_works_praise.praiseId desc
+			</isEmpty>
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	  ) as kpkp_works_praise_index using(praiseId)
+	  <dynamic prepend="">
+	  	<isNotNull property="userId">
+			inner join kpkp_user_account on kpkp_works_praise.authorId = kpkp_user_account.userId
+		</isNotNull>
+		<isNotNull property="authorId">
+			inner join kpkp_user_account on kpkp_works_praise.userId = kpkp_user_account.userId
+		</isNotNull>
+		<isNotNull property="photoId">
+			inner join kpkp_user_account on kpkp_works_praise.userId = kpkp_user_account.userId
+		</isNotNull>
+		<isNotNull property="topicId">
+			inner join kpkp_user_account on kpkp_works_praise.userId = kpkp_user_account.userId group by userId
+		</isNotNull>
+	  </dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwWorksPraiseCond"
+		resultClass="int">
+		select count(*) from kpkp_works_praise
+		<include refid="condition" />
+	</select>
+
+	<insert id="insert" parameterClass="kpkpWwwWorksPraise">
+		insert into kpkp_works_praise
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="praiseId">
+			SELECT @@IDENTITY
+			AS praiseId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwWorksPraise">
+		update kpkp_works_praise
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where praiseId=#praiseId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwWorksPraiseCond">
+		update kpkp_works_praise
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_works_praise where praiseId = #praiseId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwWorksPraiseCond">
+		delete from kpkp_works_praise
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwWorksPraiseCond"
+		resultClass="kpkpWwwWorksPraise" remapResults="true">
+		select $statsParam$ from kpkp_works_praise
+		<include refid="condition" />
+	</select>
+</sqlMap>

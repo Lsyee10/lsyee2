@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<package name="news_article" extends="lsy" namespace="/news/article">
+		<action name="list" class="lsyWwwNewsArticleAction" method="pagin">
+			<result name="success">/jsp/www/news/article/list.jsp</result>
+		</action>
+		<action name="detail" class="lsyWwwNewsArticleAction" method="detail">
+			<result name="success">/jsp/www/news/article/detail.jsp</result>
+		</action>
+		<action name="doc" class="lsyWwwNewsArticleAction" method="doc">
+			<result name="success">/jsp/www/news/article/doc.jsp</result>
+		</action>
+	</package>
+	<!-- <package name="news_comment" extends="lsy" namespace="/news/comment">
+		<action name="createAsync" class="lsyWwwNewsCommentAction" method="create">
+			<result name="success" type="freemarker">/ftl/www/news/comment/item.ftl</result>
+		</action>
+
+		<action name="paginAsync" class="lsyWwwNewsCommentAction" method="pagin">
+			<result name="success" type="freemarker">/ftl/www/news/comment/list.ftl</result>
+		</action>
+
+		<action name="delete" class="lsyWwwNewsCommentAction" method="delete">
+			<result name="success" type="json"><param name="root">action</param></result>
+		</action>
+	</package> -->
+</struts>

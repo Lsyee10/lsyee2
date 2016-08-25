@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"  
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KpkpWwwPushLinkMapper">
+	<typeAlias alias="kpkpWwwPushLink" type="com.lsy.www.entity.model.push.KpkpWwwPushLink" />
+	<typeAlias alias="kpkpWwwPushLinkCond" type="com.lsy.www.entity.cond.push.KpkpWwwPushLinkCond" />
+	<sql id="condition">
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="linkId">
+			    linkId = #linkId#
+			</isNotNull>
+			<isNotNull prepend="and" property="pageFlag">
+			    pageFlag = #pageFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="pubFlag">
+			    pubFlag = #pubFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="posFlag">
+			    posFlag = #posFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="recycleFlag">
+			    recycleFlag = #recycleFlag#
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<sql id="field">
+		<isNotNull prepend="," property="sn">
+			sn = #sn#
+		</isNotNull>
+		<isNotNull prepend="," property="title1">
+			title1 = #title1#
+		</isNotNull>
+		<isNotNull prepend="," property="title2">
+			title2 = #title2#
+		</isNotNull>
+		<isNotNull prepend="," property="url1">
+			url1 = #url1#
+		</isNotNull>
+		<isNotNull prepend="," property="url2">
+			url2 = #url2#
+		</isNotNull>
+		<isNotNull prepend="," property="img1">
+			img1 = #img1#
+		</isNotNull>
+		<isNotNull prepend="," property="img2">
+			img2 = #img2#
+		</isNotNull>
+		<isNotNull prepend="," property="pageFlag">
+			pageFlag = #pageFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="pubFlag">
+			pubFlag = #pubFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="posFlag">
+			posFlag = #posFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="recycleFlag">
+			recycleFlag = #recycleFlag#
+		</isNotNull>
+		<isNotNull prepend="," property="addTime">
+			addTime = #addTime#
+		</isNotNull>
+		<isNotNull prepend="," property="pubTime">
+			pubTime = #pubTime#
+		</isNotNull>
+		<isNotNull prepend="," property="startDate">
+			startDate = #startDate#
+		</isNotNull>
+		<isNotNull prepend="," property="endDate">
+			endDate = #endDate#
+		</isNotNull>
+		<isNotNull prepend="," property="adminId">
+			adminId = #adminId#
+		</isNotNull>
+	</sql>
+	
+	<select id="query" parameterClass="int" resultClass="kpkpWwwPushLink">
+		select * from kpkp_push_link where logId=#logId#
+	</select>
+
+	<select id="queryByCond" parameterClass="kpkpWwwPushLinkCond" resultClass="kpkpWwwPushLink">
+		select * from kpkp_push_link
+		<include refid="condition" />
+		<dynamic prepend="group by">
+			<isNotEmpty property="groupParam">
+				$groupParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty property="orderParam">
+				$orderParam$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="">
+			<isNotNull property="firstResult">
+				<isNotNull property="maxResults">
+					limit #firstResult#, #maxResults#
+				</isNotNull>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="countByCond" parameterClass="kpkpWwwPushLinkCond" resultClass="int">
+		select count(*) from kpkp_push_link
+		<include refid="condition" />
+	</select>
+
+	<insert id="insert" parameterClass="kpkpWwwPushLink">
+		insert into kpkp_push_link
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="linkId">
+			SELECT @@IDENTITY
+			AS linkId
+		</selectKey>
+	</insert>
+
+	<update id="update" parameterClass="kpkpWwwPushLink">
+		update kpkp_push_link
+		<dynamic prepend="set">
+			<include refid="field"/>
+		</dynamic>
+		where linkId=#linkId#
+	</update>
+
+	<update id="updateByCond" parameterClass="kpkpWwwPushLinkCond">
+		update kpkp_push_link
+		<dynamic prepend="set">
+			<isNotEmpty prepend="" property="updateParam">
+				$updateParam$
+			</isNotEmpty>
+		</dynamic>
+		<include refid="condition" />
+	</update>
+
+	<delete id="delete" parameterClass="int">
+		delete from kpkp_push_link where linkId = #linkId#
+	</delete>
+
+	<delete id="deleteByCond" parameterClass="kpkpWwwPushLinkCond">
+		delete from kpkp_push_link
+		<include refid="condition" />
+	</delete>
+
+	<select id="statsByCond" parameterClass="kpkpWwwPushLinkCond"
+		resultClass="kpkpWwwPushLink" remapResults="true">
+		select $statsParam$ from kpkp_push_link
+		<include refid="condition" />
+	</select>
+</sqlMap>

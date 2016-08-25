@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+  <settings lazyLoadingEnabled="true" useStatementNamespaces="true" cacheModelsEnabled="true"/>
+  <sqlMap resource="com/lsy/www/entity/model/activity/KpkpWwwActivityApply.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/activity/KpkpWwwActivityIntro.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/activity/KpkpWwwActivityItem.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/activity/KpkpWwwActivityJury.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/activity/KpkpWwwActivityProvide.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/activity/KpkpWwwActivityVoteOption.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/activity/KpkpWwwActivityVotePoll.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/activity/KpkpWwwActivityVoteTurn.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/chat/KpkpWwwChatGroupItem.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/chat/KpkpWwwChatGroupMsg.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/chat/KpkpWwwChatGroupSess.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/chat/KpkpWwwChatPrivateMsg.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/chat/KpkpWwwChatPrivateSess.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/news/KpkpWwwNewsArticle.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/news/KpkpWwwNewsColumn.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/news/KpkpWwwNewsComment.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/news/KpkpWwwNewsImage.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/news/KpkpWwwNewsTag.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/news/KpkpWwwNewsItem.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/news/KpkpWwwNewsRelate.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/news/KpkpWwwNewsVote.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/news/KpkpWwwNewsVoteOption.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/news/KpkpWwwNewsVotePoll.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/push/KpkpWwwPushHome.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/push/KpkpWwwPushSlide.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/push/KpkpWwwPushLink.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/push/KpkpWwwPushNotice.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/sys/KpkpWwwSysArea.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/sys/KpkpWwwSysLog.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/sys/KpkpWwwSysPurview.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/sys/KpkpWwwSysRole.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/sys/KpkpWwwSysRolePurview.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/sys/KpkpWwwSysRoleUser.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/sys/KpkpWwwSysVersion.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/user/KpkpWwwUserAccount.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/user/KpkpWwwUserAuthMail.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/user/KpkpWwwUserAuthSms.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/user/KpkpWwwUserEvent.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/user/KpkpWwwUserFocus.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/user/KpkpWwwUserMigrate.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/user/KpkpWwwUserSet.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/user/KpkpWwwUserStatsDay.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/user/KpkpWwwUserStatsSum.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/user/KpkpWwwUserSubscribe.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/works/KpkpWwwWorksComment.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/works/KpkpWwwWorksInform.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/works/KpkpWwwWorksPhoto.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/works/KpkpWwwWorksPhotoEdit.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/works/KpkpWwwWorksPhotoExif.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/works/KpkpWwwWorksPhotoTag.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/works/KpkpWwwWorksPraise.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/works/KpkpWwwWorksTag.xml"/>
+  <sqlMap resource="com/lsy/www/entity/model/works/KpkpWwwWorksTopic.xml"/>
+</sqlMapConfig>
