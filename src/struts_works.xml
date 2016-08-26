@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
 <struts>
-	<package name="works_topic" extends="kpkp" namespace="/works/topic">
-		<action name="prepCreate" class="kpkpWwwWorksTopicAction"
+	<package name="works_topic" extends="lsy" namespace="/works/topic">
+		<action name="prepCreate" class="lsyWwwWorksTopicAction"
 			method="prepCreate">
 			<result name="success">/jsp/www/works/topic/create.jsp</result>
 		</action>
 
-		<action name="dealCreate" class="kpkpWwwWorksTopicAction"
+		<action name="dealCreate" class="lsyWwwWorksTopicAction"
 			method="dealCreate">
 			<result name="success" type="redirectAction">
 				<param name="actionName">jump</param>
@@ -16,12 +16,12 @@
 			</result>
 		</action>
 
-		<action name="prepModify" class="kpkpWwwWorksTopicAction"
+		<action name="prepModify" class="lsyWwwWorksTopicAction"
 			method="prepModify">
 			<result name="success">/jsp/www/works/topic/modify.jsp</result>
 		</action>
 
-		<action name="dealModify" class="kpkpWwwWorksTopicAction"
+		<action name="dealModify" class="lsyWwwWorksTopicAction"
 			method="dealModify">
 			<result name="success" type="redirectAction">
 				<param name="actionName">jump</param>
@@ -30,34 +30,34 @@
 			</result>
 		</action>
 
-		<action name="detail" class="kpkpWwwWorksTopicAction" method="detail">
+		<action name="detail" class="lsyWwwWorksTopicAction" method="detail">
 			<result name="success">/jsp/www/works/topic/detail.jsp</result>
 		</action>
 
-		<action name="recycle" class="kpkpWwwWorksTopicAction" method="recycle">
+		<action name="recycle" class="lsyWwwWorksTopicAction" method="recycle">
 			<result name="success" type="json">
 				<param name="root">action</param>
 			</result>
 		</action>
 
-		<action name="taskBack" class="kpkpWwwWorksTopicAction" method="taskBack">
+		<action name="taskBack" class="lsyWwwWorksTopicAction" method="taskBack">
 			<result name="success" type="json">
 				<param name="root">action</param>
 			</result>
 		</action>
 
-		<action name="stationBack" class="kpkpWwwWorksTopicAction"
+		<action name="stationBack" class="lsyWwwWorksTopicAction"
 			method="stationBack">
 			<result name="success" type="json">
 				<param name="root">action</param>
 			</result>
 		</action>
 
-		<action name="choice" class="kpkpWwwWorksPhotoAction" method="choicePhotos">
+		<action name="choice" class="lsyWwwWorksTopicAction" method="choicePhotos">
 			<result name="success">/jsp/www/works/topic/choice.jsp</result>
 		</action>
 
-		<action name="newest" class="kpkpWwwWorksPhotoAction" method="newestPhotos">
+		<action name="newest" class="lsyWwwWorksTopicAction" method="newestTopics">
 			<result name="success">/jsp/www/works/topic/newest.jsp</result>
 		</action>
 	</package>

@@ -32,7 +32,7 @@ public interface KpkpWwwActivityItemDao extends LsyWwwBaseDao<KpkpWwwActivityIte
 	/**
 	 * 根据推荐查询活动项目
 	 * 
-	 * @param actvityPushId
+	 * @param
 	 * @param size
 	 * @return
 	 * @throws DaoException

@@ -9,6 +9,7 @@
 	<constant name="struts.xwork.chaining.copyMessages" value="true" />
 	<include file="struts_user.xml"></include>
 	<include file="struts_news.xml"></include>
+	<include file="struts_works.xml"></include>
 	<package name="lsy" extends="struts-default,json-default" namespace="/">
 		<interceptors>
 			<interceptor-stack name="lsyDefaultStack">
