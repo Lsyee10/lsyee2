@@ -5,6 +5,7 @@
 <html>
 <head>
     <title>最新上传-发现-快拍快拍</title>
+	<link href="/css/www/common.css?r=<%=new Random().nextInt()%>" rel="stylesheet">
 </head>
 <body>
     <section class="container">
@@ -16,9 +17,9 @@
             </nav>
         </header>
         <!-- 列表开始 -->
-        <s:if test="null!=#request.photoPagin&&#request.photoPagin.totalRows>0">
+        <s:if test="null!=#request.topicPagin&&#request.topicPagin.totalRows>0">
 	        <ul class="avg-sm-2 avg-md-4 avg-lg-4 thumbnails auto">
-	        	<s:iterator value="#request.photoPagin.curPageList" status="st">
+	        	<s:iterator value="#request.topicPagin.curPageList" status="st">
 	        		<li>
 		                <a href="/works/photo/detail.action?photoId=<s:property value='photoId'/>" target="_blank" class="img">
 		                <img src="/img/www/grey.png" data-original="<s:property value='img4'/>">
@@ -43,8 +44,8 @@
     </section>
     <!-- 底部开始 -->
      <nav>
-        <s:set value="#request.photoPagin.curPage" name="curPage"/>
-   	  	<s:set value="#request.photoPagin.totalPages" name="totalPages"/>
+        <s:set value="#request.topicPagin.curPage" name="curPage"/>
+   	  	<s:set value="#request.topicPagin.totalPages" name="totalPages"/>
       	<s:include value="/jsp/www/pagin.jsp">
       	<s:param name="pageLink">newest.action?scope=<s:property value='scope'/></s:param>
       	<s:param name="anchor"></s:param>
