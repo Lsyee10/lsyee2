@@ -9,9 +9,9 @@ import java.math.BigDecimal;
 
 /**
  * Description:活动报名视图
- * 
- * @version 1.0 2015年11月27日
+ *
  * @author Wu guang jing
+ * @version 1.0 2015年11月27日
  */
 public class KpkpWwwActivityApplyView {
 
