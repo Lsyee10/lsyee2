@@ -53,7 +53,7 @@
 			</result>
 		</action>
 
-		<action name="choice" class="lsyWwwWorksTopicAction" method="choicePhotos">
+		<action name="choice" class="lsyWwwWorksTopicAction" method="topTopics">
 			<result name="success">/jsp/www/works/topic/choice.jsp</result>
 		</action>
 
