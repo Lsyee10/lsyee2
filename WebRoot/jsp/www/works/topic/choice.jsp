@@ -5,7 +5,6 @@
 <html lang="zh-CN">
 <head>
     <title>编辑精选-发现-快拍快拍</title>
-	<link href="/css/www/common.css?r=<%=new Random().nextInt()%>" rel="stylesheet">
 </head>
 <body>
 	<section class="container">
