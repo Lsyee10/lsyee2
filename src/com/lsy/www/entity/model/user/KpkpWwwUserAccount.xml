@@ -3,8 +3,8 @@
 "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="KpkpWwwUserAccountMapper">
-	<typeAlias alias="kpkpWwwUserAccount" type="com.kpkp.www.entity.model.user.KpkpWwwUserAccount" />
-	<typeAlias alias="kpkpWwwUserAccountCond" type="com.kpkp.www.entity.cond.user.KpkpWwwUserAccountCond" />
+	<typeAlias alias="kpkpWwwUserAccount" type="com.lsy.www.entity.model.user.KpkpWwwUserAccount" />
+	<typeAlias alias="kpkpWwwUserAccountCond" type="com.lsy.www.entity.cond.user.KpkpWwwUserAccountCond" />
 	<sql id="condition">
 		<dynamic prepend="where">
 			<isNotNull prepend="and" property="userId">
