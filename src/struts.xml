@@ -19,6 +19,22 @@
 		
 		<default-interceptor-ref name="lsyDefaultStack"></default-interceptor-ref>
 		<default-action-ref name="pagenotfound"></default-action-ref>
+
+		<global-results>
+			<result name="auth">/jsp/www/user/io/auth.jsp</result>
+			<result name="error" type="redirectAction">
+				<param name="actionName">error</param>
+				<param name="namespace">/sys/return</param>
+			</result>
+			<result name="exception" type="redirectAction">
+				<param name="actionName">error</param>
+				<param name="namespace">/sys/return</param>
+			</result>
+			<result name="actionException" type="redirectAction">
+				<param name="actionName">error</param>
+				<param name="namespace">/sys/return</param>
+			</result>
+		</global-results>
 		
 		<global-exception-mappings>
 			<exception-mapping exception="com.kit.exception.ActionException"

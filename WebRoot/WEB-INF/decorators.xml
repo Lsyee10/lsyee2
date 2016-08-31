@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<decorators defaultdir="/dec">
+    <!-- 在excludes元素下指定的页面将不会由SiteMesh来装饰 -->
+    <excludes>
+        <pattern>/js/*</pattern>
+        <pattern>/css/*</pattern>
+        <pattern>/img/*</pattern>
+        <pattern>/ueditor/*</pattern>
+        <pattern>/index.html*</pattern>
+        <pattern>/auth.action*</pattern>
+        <pattern>/*Async.action*</pattern>
+    </excludes>
+
+    <decorator name="main1" page="main1.jsp">
+    	<pattern>/news/*</pattern>
+    	<pattern>/works/*</pattern>
+    	<pattern>/activity/*</pattern>
+    	<pattern>/user/my/*</pattern>
+    	<pattern>/user/his/*</pattern>
+    	<pattern>/sys/home/*</pattern>
+    	<pattern>/sys/search/*</pattern>
+    	<pattern>/index.action*</pattern>
+    </decorator>
+    
+    <decorator name="main2" page="main2.jsp">
+    	<pattern>/return/*</pattern>
+    	<pattern>/user/io/*</pattern>
+    	<pattern>/sys/return/*</pattern>
+    </decorator>
+
+    <decorator name="head1" page="head1.jsp"> </decorator>
+    <decorator name="head2" page="head2.jsp"> </decorator>
+    <decorator name="foot1" page="foot1.jsp"> </decorator>
+</decorators>
