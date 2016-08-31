@@ -12,8 +12,8 @@
         <header class="title">
             <h2>最新上传</h2>
             <nav class="sm">
-                <a href="/works/photo/newest.action?scope=all">全部照片(<s:property value="#request.totalNum"/>)</a>
-                <a href="/works/photo/newest.action?scope=today">今日上传(<s:property value="#request.todayNum"/>)</a>
+                <a href="/works/topic/newest.action?scope=all">全部照片(<s:property value="#request.totalNum"/>)</a>
+                <a href="/works/topic/newest.action?scope=today">今日上传(<s:property value="#request.todayNum"/>)</a>
             </nav>
         </header>
         <!-- 列表开始 -->
@@ -21,12 +21,12 @@
 	        <ul class="avg-sm-2 avg-md-4 avg-lg-4 thumbnails auto">
 	        	<s:iterator value="#request.topicPagin.curPageList" status="st">
 	        		<li>
-		                <a href="/works/photo/detail.action?photoId=<s:property value='photoId'/>" target="_blank" class="img">
+		                <a href="/works/topic/detail.action?topicId=<s:property value='topicId'/>" target="_blank" class="img">
 		                <img src="/img/www/grey.png" data-original="<s:property value='img4'/>">
 		                </a>
 		                <div class="caption">
 		                    <p class="title">
-		                    	<a href="/works/photo/detail.action?photoId=<s:property value='photoId'/>" target="_blank">
+		                    	<a href="/works/topic/detail.action?topicId=<s:property value='topicId'/>" target="_blank">
 		                    		<s:property value='intro' escape="false"/>
 		                    	</a><s:if test="null == intro||'' == intro">&nbsp;</s:if>
 		                    </p>

@@ -14,6 +14,7 @@
 	<script src="/js/com/www/works/photo.js?r=<%=new Random().nextInt()%>" type="text/javascript"></script>
 	<script src="/js/com/www/works/praise.js?r=<%=new Random().nextInt()%>" type="text/javascript"></script>
 	<script src="/js/com/www/works/comment.js?r=<%=new Random().nextInt()%>" type="text/javascript"></script>
+	<link href="/css/www/common.css?r=<%=new Random().nextInt()%>" rel="stylesheet">
 	<script type="text/javascript">
 		$(document).ready(function() {
 			comment.prepPub();
