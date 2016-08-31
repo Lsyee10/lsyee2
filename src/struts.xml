@@ -10,13 +10,18 @@
 	<include file="struts_user.xml"></include>
 	<include file="struts_news.xml"></include>
 	<include file="struts_works.xml"></include>
+	<include file="struts_sys.xml"></include>
 	<package name="lsy" extends="struts-default,json-default" namespace="/">
 		<interceptors>
+			<!-- 登录拦截器 -->
+			<interceptor name="loginInterceptor"
+						 class="com.lsy.www.ctrl.interceptor.LsyWwwLoginInterceptor"></interceptor>
 			<interceptor-stack name="lsyDefaultStack">
+				<interceptor-ref name="loginInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
 			</interceptor-stack>
 		</interceptors>
-		
+
 		<default-interceptor-ref name="lsyDefaultStack"></default-interceptor-ref>
 		<default-action-ref name="pagenotfound"></default-action-ref>
 
