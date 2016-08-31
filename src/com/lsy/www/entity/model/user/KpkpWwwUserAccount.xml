@@ -3,8 +3,8 @@
 "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="KpkpWwwUserAccountMapper">
-	<typeAlias alias="kpkpWwwUserAccount" type="com.lsy.www.entity.model.user.KpkpWwwUserAccount" />
-	<typeAlias alias="kpkpWwwUserAccountCond" type="com.lsy.www.entity.cond.user.KpkpWwwUserAccountCond" />
+	<typeAlias alias="kpkpWwwUserAccount" type="com.kpkp.www.entity.model.user.KpkpWwwUserAccount" />
+	<typeAlias alias="kpkpWwwUserAccountCond" type="com.kpkp.www.entity.cond.user.KpkpWwwUserAccountCond" />
 	<sql id="condition">
 		<dynamic prepend="where">
 			<isNotNull prepend="and" property="userId">
@@ -25,6 +25,9 @@
 			<isNotEmpty prepend="and" property="email">
 				kpkp_user_account.email = #email#
 			</isNotEmpty>
+			<isNotEmpty prepend="and" property="uneqEmail">
+				kpkp_user_account.email != #uneqEmail#
+			</isNotEmpty>
 			<isNotEmpty prepend="and" property="qq">
 				kpkp_user_account.qq = #qq#
 			</isNotEmpty>
@@ -33,6 +36,11 @@
 			</isNotEmpty>
 			<isNotEmpty prepend="and" property="weibo">
 				kpkp_user_account.weibo = #weibo#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="loginIp">
+				kpkp_user_account.loginIp = #loginIp#
+				and kpkp_user_account.email !=""
+				and kpkp_user_account.cellphone =""
 			</isNotEmpty>
 			<isNotEmpty prepend="and" property="wechatOpenId">
 				kpkp_user_account.wechatOpenId = #wechatOpenId#
@@ -57,6 +65,12 @@
 			</isNotNull>
 			<isNotNull prepend="and" property="recycleFlag">
 				kpkp_user_account.recycleFlag = #recycleFlag#
+			</isNotNull>
+			<isNotNull prepend="and" property="regTimeSt">
+				<![CDATA[ kpkp_user_account.regTime > #regTimeSt# ]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="regTimeEd">
+				<![CDATA[ kpkp_user_account.regTime <= #regTimeEd# ]]>
 			</isNotNull>
 		</dynamic>
 	</sql>

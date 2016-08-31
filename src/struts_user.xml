@@ -30,5 +30,142 @@
 			</result>
 		</action>
 	</package>
-		
+
+	<package name="user_io_register" extends="lsy" namespace="/user/io/register">
+		<action name="prep" class="lsyWwwUserRegisterAction" method="prep">
+			<interceptor-ref name="modelDriven" />
+			<interceptor-ref name="scopedModelDriven" />
+			<interceptor-ref name="chain" />
+			<interceptor-ref name="basicStack" />
+			<result name="success">/jsp/www/user/io/register.jsp</result>
+		</action>
+
+		<action name="deal" class="lsyWwwUserRegisterAction" method="deal">
+			<result name="input" type="chain">
+				<param name="actionName">prep</param>
+			</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">home</param>
+				<param name="namespace">/user/my</param>
+			</result>
+		</action>
+
+		<action name="validUsername" class="lsyWwwUserRegisterAction" method="validUsername">
+			<result name="success" type="json"><param name="root">action</param></result>
+		</action>
+
+		<action name="sendAuthCode" class="lsyWwwUserRegisterAction" method="sendAuthCode">
+			<result name="success" type="json"><param name="root">action</param></result>
+		</action>
+	</package>
+
+	<package name="user_io_password" extends="lsy" namespace="/user/io/password">
+		<action name="prepFind" class="lsyWwwUserPasswordAction" method="prepEdit">
+			<interceptor-ref name="modelDriven" />
+			<interceptor-ref name="scopedModelDriven" />
+			<interceptor-ref name="chain" />
+			<interceptor-ref name="basicStack" />
+			<result name="success">/jsp/www/user/io/findPwd.jsp</result>
+		</action>
+
+		<action name="dealFind" class="lsyWwwUserPasswordAction" method="dealFind">
+			<result name="input" type="chain">
+				<param name="actionName">prepFind</param>
+			</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">prep</param>
+				<param name="namespace">/user/io/login</param>
+			</result>
+		</action>
+
+		<action name="sendAuthCode" class="lsyWwwUserPasswordAction" method="sendAuthCode">
+			<result name="success" type="json"><param name="root">action</param></result>
+		</action>
+	</package>
+
+	<package name="user_my" extends="lsy" namespace="/user/my">
+		<action name="intro" class="lsyWwwUserProfileAction" method="summary">
+			<result name="success">/jsp/www/user/my/intro.jsp</result>
+		</action>
+
+		<action name="home" class="lsyWwwWorksTopicAction" method="myFocusedTopics">
+			<result name="success">/jsp/www/user/my/home.jsp</result>
+		</action>
+
+		<action name="homeAsync" class="lsyWwwWorksTopicAction" method="myFocusedTopics">
+			<result name="success" type="freemarker">/ftl/www/user/my/home.ftl</result>
+		</action>
+	</package>
+
+	<package name="user_my_setting" extends="lsy" namespace="/user/my/setting">
+		<action name="profile" class="lsyWwwUserProfileAction" method="summary">
+			<interceptor-ref name="modelDriven" />
+			<interceptor-ref name="scopedModelDriven" />
+			<interceptor-ref name="chain" />
+			<interceptor-ref name="basicStack" />
+			<result name="success">/jsp/www/user/my/setting/profile.jsp</result>
+		</action>
+
+		<action name="profileModify" class="lsyWwwUserProfileAction" method="dealModify">
+			<result name="input" type="chain">
+				<param name="actionName">profiles</param>
+				<param name="namespace">/user/my/setting</param>
+			</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">jump</param>
+				<param name="namespace">/sys/return</param>
+				<param name="url">/user/my/setting/profile.action</param>
+			</result>
+		</action>
+
+		<action name="avatar">
+			<result name="success">/jsp/www/user/my/setting/avatar.jsp</result>
+		</action>
+
+		<action name="avatarUploadAsync" class="lsyWwwUserAvatarAction" method="upload">
+			<result name="success" type="stream">
+				<param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+			</result>
+		</action>
+
+		<action name="avatarCutting" class="lsyWwwUserAvatarAction" method="cutting">
+			<result name="success" type="json"><param name="root">action</param></result>
+		</action>
+
+		<action name="password" class="lsyWwwUserPasswordAction" method="prepEdit">
+			<interceptor-ref name="modelDriven" />
+			<interceptor-ref name="scopedModelDriven" />
+			<interceptor-ref name="chain" />
+			<interceptor-ref name="basicStack" />
+			<interceptor-ref name="loginInterceptor"/>
+			<result name="success">/jsp/www/user/my/setting/password.jsp</result>
+		</action>
+
+		<action name="passwordModify" class="lsyWwwUserPasswordAction" method="dealModify">
+			<result name="input" type="chain">
+				<param name="actionName">password</param>
+				<param name="namespace">/user/my/setting</param>
+			</result>
+			<result name="success" type="chain">
+				<param name="actionName">exit</param>
+				<param name="namespace">/user/io/login</param>
+			</result>
+		</action>
+
+		<action name="wall">
+			<result name="success">/jsp/www/user/my/setting/wall.jsp</result>
+		</action>
+
+	</package>
+
+	<package name="user_his" extends="lsy" namespace="/user/his">
+		<action name="intro" class="lsyWwwUserProfileAction" method="summary">
+			<result name="success">/jsp/www/user/his/intro.jsp</result>
+		</action>
+
+		<action name="works" class="lsyWwwWorksTopicAction" method="hisNewestTopics">
+			<result name="success">/jsp/www/user/his/topic.jsp</result>
+		</action>
+	</package>
 </struts>

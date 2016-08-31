@@ -1,6 +1,6 @@
 /**
  * Project : kpkp
- * Copyright (c) Wu Guang Jing. 
+ * Copyright (c) Wu Guang Jing.
  * All rights reserved.
  */
 package com.lsy.www.entity.cond.user;
@@ -9,163 +9,199 @@ import com.lsy.www.entity.cond.KpkpWwwBaseCond;
 
 /**
  * Description:用户账号条件
- * 
- * @version 1.0 2015-11-23
+ *
  * @author Wu guang jing
+ * @version 1.0 2015-11-23
  */
 public class KpkpWwwUserAccountCond extends KpkpWwwBaseCond {
 
-	private Integer userId;
-	private String nickname;
-	private String nicknameLk;
-	private String password;
-	private String cellphone;
-	private String email;
-	private String qq;
-	private String weibo;
-	private String wechat;
-	private String wechatOpenId;
-	private String webSessionId;
-	private String appTokenId;
-	private Integer topFlag;
-	private Integer stateFlag;
-	private Integer loginFlag;
-	private Integer typeFlag;
-	private Integer recycleFlag;
+    private Integer userId;
+    private String nickname;
+    private String nicknameLk;
+    private String password;
+    private String cellphone;
+    private String email;
+    private String uneqEmail;
+    private String qq;
+    private String weibo;
+    private String wechat;
+    private String wechatOpenId;
+    private String webSessionId;
+    private String appTokenId;
+    private Integer topFlag;
+    private Integer stateFlag;
+    private Integer loginFlag;
+    private Integer typeFlag;
+    private String loginIp;
+    private Integer recycleFlag;
+    private String regTimeSt;
+    private String regTimeEd;
 
-	public Integer getUserId() {
-		return userId;
-	}
+    public String getUneqEmail() {
+        return uneqEmail;
+    }
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+    public void setUneqEmail(String uneqEmail) {
+        this.uneqEmail = uneqEmail;
+    }
 
-	public String getNickname() {
-		return nickname;
-	}
+    public String getLoginIp() {
+        return loginIp;
+    }
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
+    public void setLoginIp(String loginIp) {
+        this.loginIp = loginIp;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getRegTimeSt() {
+        return regTimeSt;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setRegTimeSt(String regTimeSt) {
+        this.regTimeSt = regTimeSt;
+    }
 
-	public String getCellphone() {
-		return cellphone;
-	}
+    public String getRegTimeEd() {
+        return regTimeEd;
+    }
 
-	public void setCellphone(String cellphone) {
-		this.cellphone = cellphone;
-	}
+    public void setRegTimeEd(String regTimeEd) {
+        this.regTimeEd = regTimeEd;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public Integer getUserId() {
+        return userId;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
-	public String getQq() {
-		return qq;
-	}
+    public String getNickname() {
+        return nickname;
+    }
 
-	public void setQq(String qq) {
-		this.qq = qq;
-	}
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
-	public String getWeibo() {
-		return weibo;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setWeibo(String weibo) {
-		this.weibo = weibo;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getWechat() {
-		return wechat;
-	}
+    public String getCellphone() {
+        return cellphone;
+    }
 
-	public void setWechat(String wechat) {
-		this.wechat = wechat;
-	}
+    public void setCellphone(String cellphone) {
+        this.cellphone = cellphone;
+    }
 
-	public String getWechatOpenId() {
-		return wechatOpenId;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setWechatOpenId(String wechatOpenId) {
-		this.wechatOpenId = wechatOpenId;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getWebSessionId() {
-		return webSessionId;
-	}
+    public String getQq() {
+        return qq;
+    }
 
-	public void setWebSessionId(String webSessionId) {
-		this.webSessionId = webSessionId;
-	}
+    public void setQq(String qq) {
+        this.qq = qq;
+    }
 
-	public String getAppTokenId() {
-		return appTokenId;
-	}
+    public String getWeibo() {
+        return weibo;
+    }
 
-	public void setAppTokenId(String appTokenId) {
-		this.appTokenId = appTokenId;
-	}
+    public void setWeibo(String weibo) {
+        this.weibo = weibo;
+    }
 
-	public Integer getTopFlag() {
-		return topFlag;
-	}
+    public String getWechat() {
+        return wechat;
+    }
 
-	public void setTopFlag(Integer topFlag) {
-		this.topFlag = topFlag;
-	}
+    public void setWechat(String wechat) {
+        this.wechat = wechat;
+    }
 
-	public Integer getStateFlag() {
-		return stateFlag;
-	}
+    public String getWechatOpenId() {
+        return wechatOpenId;
+    }
 
-	public void setStateFlag(Integer stateFlag) {
-		this.stateFlag = stateFlag;
-	}
+    public void setWechatOpenId(String wechatOpenId) {
+        this.wechatOpenId = wechatOpenId;
+    }
 
-	public Integer getLoginFlag() {
-		return loginFlag;
-	}
+    public String getWebSessionId() {
+        return webSessionId;
+    }
 
-	public void setLoginFlag(Integer loginFlag) {
-		this.loginFlag = loginFlag;
-	}
+    public void setWebSessionId(String webSessionId) {
+        this.webSessionId = webSessionId;
+    }
 
-	public Integer getTypeFlag() {
-		return typeFlag;
-	}
+    public String getAppTokenId() {
+        return appTokenId;
+    }
 
-	public void setTypeFlag(Integer typeFlag) {
-		this.typeFlag = typeFlag;
-	}
+    public void setAppTokenId(String appTokenId) {
+        this.appTokenId = appTokenId;
+    }
 
-	public Integer getRecycleFlag() {
-		return recycleFlag;
-	}
+    public Integer getTopFlag() {
+        return topFlag;
+    }
 
-	public void setRecycleFlag(Integer recycleFlag) {
-		this.recycleFlag = recycleFlag;
-	}
+    public void setTopFlag(Integer topFlag) {
+        this.topFlag = topFlag;
+    }
 
-	public String getNicknameLk() {
-		return nicknameLk;
-	}
+    public Integer getStateFlag() {
+        return stateFlag;
+    }
 
-	public void setNicknameLk(String nicknameLk) {
-		this.nicknameLk = nicknameLk;
-	}
+    public void setStateFlag(Integer stateFlag) {
+        this.stateFlag = stateFlag;
+    }
+
+    public Integer getLoginFlag() {
+        return loginFlag;
+    }
+
+    public void setLoginFlag(Integer loginFlag) {
+        this.loginFlag = loginFlag;
+    }
+
+    public Integer getTypeFlag() {
+        return typeFlag;
+    }
+
+    public void setTypeFlag(Integer typeFlag) {
+        this.typeFlag = typeFlag;
+    }
+
+    public Integer getRecycleFlag() {
+        return recycleFlag;
+    }
+
+    public void setRecycleFlag(Integer recycleFlag) {
+        this.recycleFlag = recycleFlag;
+    }
+
+    public String getNicknameLk() {
+        return nicknameLk;
+    }
+
+    public void setNicknameLk(String nicknameLk) {
+        this.nicknameLk = nicknameLk;
+    }
 }

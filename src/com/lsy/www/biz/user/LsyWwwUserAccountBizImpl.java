@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.kit.word.SecureHelper;
 import org.springframework.stereotype.Service;
 
 import com.itg.mail.MailItg;
@@ -82,6 +83,47 @@ public class LsyWwwUserAccountBizImpl extends LsyWwwBaseBizImpl implements LsyWw
 		return (MailItg) SpringContextUtil.getApplicationContext().getBean("mailItg");
 	}
 
+
+
+	/**
+	 * 是否允许注册
+	 *
+	 * @param accept
+	 * @return
+	 * @throws BizException
+	 */
+	private boolean ifAllowRegister(String accept, Integer limit) throws BizException {
+		KpkpWwwUserAccountCond accountCond = null;
+		List<KpkpWwwUserAccount> accounts = null;
+		try {
+			// 如果是邮箱注册
+			if (accept.indexOf("@") != -1) {
+
+				// 获取相同IP的注册情况
+				accountCond = new KpkpWwwUserAccountCond();
+				accountCond.setFirstResult(0);
+				accountCond.setMaxResults(limit);
+				accountCond.setLoginIp(ContextHelper.getProxyAddr());
+				accountCond.setRegTimeSt(JodaTimeHelper.getDate() + SystemConstant.QUERY_TIME_START);
+				accounts = this.kpkpWwwUserAccountDao.queryByCond(accountCond);
+
+				// 如果账号存在
+				if (null != accounts && accounts.size() >= limit) {
+					return false;
+				}
+			}
+
+			return true;
+		} catch (DaoException de) {
+			log.error("ifAllowRegister error", de);
+			throw new BizException("ifAllowRegister failure");
+		} finally {
+			accounts = null;
+			accountCond = null;
+		}
+	}
+
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -99,7 +141,7 @@ public class LsyWwwUserAccountBizImpl extends LsyWwwBaseBizImpl implements LsyWw
 		try {
 			// 构建账号查询
 			accountCond = new KpkpWwwUserAccountCond();
-			accountCond.setPassword(EncryptMD5.encrypt(password));
+			accountCond.setPassword(EncryptMD5.eccrypt(password));
 			accountCond.setRecycleFlag(SystemContext.YN.NO.getValue());
 			accountCond.setStateFlag(SystemContext.YN.YES.getValue());
 			accountCond.setFirstResult(0);
@@ -394,7 +436,7 @@ public class LsyWwwUserAccountBizImpl extends LsyWwwBaseBizImpl implements LsyWw
 				// 更新密码
 				account = new KpkpWwwUserAccount();
 				account.setUserId(accounts.get(0).getUserId());
-				account.setPassword(EncryptMD5.encrypt(password));
+				account.setPassword(EncryptMD5.eccrypt(password));
 				this.kpkpWwwUserAccountDao.update(account);
 				return true;
 			} else {
@@ -430,12 +472,12 @@ public class LsyWwwUserAccountBizImpl extends LsyWwwBaseBizImpl implements LsyWw
 			// 如果账号存在且有效
 			if (null != account && SystemContext.YN.YES.getValue().equals(account.getStateFlag())
 					&& SystemContext.YN.NO.getValue().equals(account.getRecycleFlag())
-					&& account.getPassword().equals(EncryptMD5.encrypt(oldPassword))) {
+					&& account.getPassword().equals(EncryptMD5.eccrypt(oldPassword))) {
 
 				// 更新密码
 				account = new KpkpWwwUserAccount();
 				account.setUserId(userId);
-				account.setPassword(EncryptMD5.encrypt(newPassword));
+				account.setPassword(EncryptMD5.eccrypt(newPassword));
 				this.kpkpWwwUserAccountDao.update(account);
 				return true;
 			} else {
@@ -516,28 +558,37 @@ public class LsyWwwUserAccountBizImpl extends LsyWwwBaseBizImpl implements LsyWw
 	 * java.lang.String, java.lang.String)
 	 */
 	@Override
-	public KpkpWwwUserSessionView register(String accept, String nickname, String passowrd) throws BizException {
+	public Map<String, KpkpWwwUserSessionView> register(String accept, String nickname, String passowrd)
+			throws BizException {
+		// TODO Auto-generated method stub
 		KpkpWwwUserAccount account = null;
 		KpkpWwwUserSessionView sessionView = null;
+		Map<String, KpkpWwwUserSessionView> rst = new HashMap<String, KpkpWwwUserSessionView>(1);
 		try {
+			// 过滤昵称
+			nickname = SecureHelper.filterWord(nickname);
+
 			// 如果昵称已存在
 			if (null != this.kpkpWwwUserAccountDao.queryByNickname(nickname)) {
-				return null;
+				rst.put(LsyWwwUserAccountBiz.REGISTER_RST_NICKNAME_EXIST, null);
+			}
+			// 如果是来自相同IP的邮箱注册
+			else if (!this.ifAllowRegister(accept, 3)) {
+				rst.put(LsyWwwUserAccountBiz.REGISTER_RST_LIMIT, null);
 			} else {
-
 				// 注册用户
 				account = new KpkpWwwUserAccount();
 				account.setNickname(nickname);
-				account.setPassword(EncryptMD5.encrypt(passowrd));
+				account.setPassword(EncryptMD5.eccrypt(passowrd));
 				account.setAvatar(SystemConstant.DEFAULT_AVATAR);
 				account.setAppBgImg(SystemConstant.DEFAULT_BG_IMG);
 				account.setAppTokenId(StringHelper.getRandomNumByLength(6));
 				account.setStateFlag(SystemContext.YN.YES.getValue());
-				account.setLoginFlag(SystemContext.USER_ACCOUNT_LOGIN.APP.getValue());
+				account.setLoginFlag(SystemContext.USER_ACCOUNT_LOGIN.WEB.getValue());
 				account.setTypeFlag(SystemContext.USER_ACCOUNT_TYPE.MEMBER.getValue());
 				account.setRegTime(DateTimeHelper.getTimestamp());
 				account.setLoginTime(DateTimeHelper.getTimestamp());
-				account.setLoginIp(ContextHelper.getRemoteAddr());
+				account.setLoginIp(ContextHelper.getProxyAddr());
 
 				// 如果是邮箱
 				if (accept.indexOf("@") != -1) {
@@ -559,10 +610,11 @@ public class LsyWwwUserAccountBizImpl extends LsyWwwBaseBizImpl implements LsyWw
 				sessionView.setTypeFlag(account.getTypeFlag());
 				sessionView.setCellphone(account.getCellphone());
 				sessionView.setEmail(account.getEmail());
-
-				// 设置响应结果
-				return sessionView;
+				rst.put(LsyWwwUserAccountBiz.REGISTER_RST_SUCCESS, sessionView);
 			}
+
+			// 设置响应结果
+			return rst;
 		} catch (DaoException de) {
 			log.error("register error", de);
 			throw new BizException("register failure");
