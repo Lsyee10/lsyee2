@@ -40,13 +40,27 @@
 				<param name="namespace">/sys/return</param>
 			</result>
 		</global-results>
-		
+
 		<global-exception-mappings>
 			<exception-mapping exception="com.kit.exception.ActionException"
 				result="actionException" />
 			<exception-mapping exception="java.lang.Exception"
 				result="exception" />
 		</global-exception-mappings>
-		
+
+
+		<action name="pagenotfound">
+			<result type="redirectAction">
+				<param name="actionName">error</param>
+				<param name="namespace">/sys/return</param>
+			</result>
+		</action>
+
+		<action name="index">
+			<result name="success" type="chain">
+				<param name="namespace">/sys/home</param>
+				<param name="actionName">staticize</param>
+			</result>
+		</action>
 	</package>
-</struts>    
+</struts>

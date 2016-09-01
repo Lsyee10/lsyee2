@@ -2,6 +2,13 @@
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
+	<package name="sys_home" extends="lsy" namespace="/sys/home">
+		<action name="staticize" class="lsyWwwSysHomeAction" method="staticize">
+			<result name="success">/jsp/www/sys/home/staticize.jsp</result>
+		</action>
+	</package>
+
+
 	<package name="sys_return" extends="lsy" namespace="/sys/return">
 		<action name="error" class="lsyWwwSysReturnAction" method="result">
 			<result name="success">/jsp/www/sys/return/error.jsp</result>
