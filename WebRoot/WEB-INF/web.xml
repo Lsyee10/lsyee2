@@ -4,9 +4,6 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          id="WebApp_ID" version="3.1">
     <display-name>lsyee</display-name>
-    <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-    </welcome-file-list>
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
@@ -81,10 +78,18 @@
         <url-pattern>/authImg.img</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>JSPSupportServlet</servlet-name>
-        <servlet-class>org.apache.struts2.views.JspSupportServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
+    <welcome-file-list>
+        <welcome-file>index.action</welcome-file>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <session-config>
+        <session-timeout>120</session-timeout>
+    </session-config>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error.action</location>
+    </error-page>
 
 </web-app>
